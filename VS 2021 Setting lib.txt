@@ -1,0 +1,22 @@
+VS 2021 Setting lib
+
+Dont forget to change 'ProjectName' to current Project Name
+
+Configuration Properties >>
+
+C/C++ >> Additional include Directory >>
+$(SolutionDir)ProjectName\includes
+
+
+Linker >> Additional lib Directory >> 
+$(SolutionDir)ProjectName\lib
+
+Linker >> Input >> Additional Dependencies >>
+glew32.lib
+glew32s.lib
+SDL2.lib
+SDL2main.lib
+opengl32.lib
+
+BuildEvent >> Post-BuildEvent >> command line >>
+copy "$(SolutionDir)ProjectName\lib\*.dll" "$(SolutionDir)$(Platform)\$(Configuration)"
