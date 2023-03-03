@@ -38,8 +38,8 @@ bool GraphicsEngine::InitGE(const char* WTitle, bool bFullscreen, int WWidth, in
 	}
 
 	// Use OpenGL 4.6 compatability and set default attributes
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); // OpenGL version <"4"> .6 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1); // OpenGL version  4 <".6">
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4); // OpenGL version <"4"> .6 
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6); // OpenGL version  4 <".6">
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY); // Using default profile
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // Transparency level
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8); // How many bits of allocation awarded to "RED" colour
@@ -113,6 +113,7 @@ void GraphicsEngine::Draw()
 	HandleWireframeMode(false);
 
 	unInt index = 0;
+
 	// TODO: Add anything that renders between these two functions
 	for (VAOPtr VAO : VAOs) {
 		Shader->RunShader();
@@ -123,9 +124,11 @@ void GraphicsEngine::Draw()
 		if (index == 0) {
 			// move in the x, y, or z, direction based on the amount added
 			transform = glm::translate(transform, glm::vec3(0.5f, 0.0f, 0.0f));
+
 			// radians is rotation amount
 			// vec3 is the direction to rotate in
 			transform = glm::rotate(transform, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
 			// x and y will work for out 2D shapes
 			// z must be larger than 0 or you wont see the object (1 is default)
 			transform = glm::scale(transform, glm::vec3(0.5f, 0.5f, 1.0f));
@@ -144,6 +147,8 @@ void GraphicsEngine::Draw()
 		}
 
 		Shader->SetMat4("transform", transform);
+
+
 		// draw each VAO
 		VAO->Draw();
 

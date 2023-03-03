@@ -16,6 +16,7 @@ void Game::DestroyGameInstance()
 
 void Game::Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight)
 {
+
 	Graphics = make_shared<GraphicsEngine>();
 
 	if (!Graphics->InitGE(WTitle, bFullscreen, WWidth, WHeight)) {
@@ -24,6 +25,24 @@ void Game::Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight)
 
 	Run();
 }
+
+/*
+int Game::GameMenu()
+{
+	int inputkey = 0;
+
+	// Create menu interface for assessment 1
+
+	cout << " - Game Menu - " << endl;
+	cout << " Press 1 for create Triangle" << endl;
+	cout << " Press 2 for create Square" << endl;
+	cout << " Press 3 for create Circle" << endl;
+	cout << " Press 4 for create Trapezium" << endl;
+	cin >> inputkey;
+
+	return inputkey;
+}
+*/
 
 Game::Game()
 {
@@ -44,23 +63,38 @@ Game::~Game()
 
 void Game::Run()
 {
+
 	if (!bIsGameOver) {
+
+		
 		// create a shader
 		Graphics->CreateShader({
 			L"Game/Shaders/TextureShader/TextureShader.svert",
 			L"Game/Shaders/TextureShader/TextureShader.sfrag"
 			});
 
-		Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
+		// Set/create texture image 
+		//Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
 
 		// create VAOs
 		Graphics->CreateVAO(GeometricShapes::Square);
 		Graphics->CreateVAO(GeometricShapes::Circle);
-		Graphics->CreateVAO(GeometricShapes::Trapezium);
-		Graphics->CreateVAO(GeometricShapes::Triangle);
+		Graphics->CreateVAO(GeometricShapes::Triangle);		
+		Graphics->CreateVAO(GeometricShapes::Heart);
+
+		
+		
+
+		
+			
+		
+
+		
+
+		
 	}
 
-	// as long as the game is not over run the loop
+	// if the game is not over run the loop
 	while (!bIsGameOver) {
 		// make sure we process what the user has done
 		ProcessInput();
@@ -78,11 +112,10 @@ void Game::ProcessInput()
 	// TODO: Handle Input
 	SDL_Event PollEvent;
 
-	//
 	while (SDL_PollEvent(&PollEvent)) {
-		//
+		
 		switch (PollEvent.type) {
-		case SDL_QUIT: //
+		case SDL_QUIT: 
 			bIsGameOver = true;
 			break;
 		default:

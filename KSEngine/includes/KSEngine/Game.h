@@ -13,6 +13,8 @@ public:
 	// Load the window
 	void Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight);
 
+	int GameMenu();
+
 private:
 	Game();
 	~Game();

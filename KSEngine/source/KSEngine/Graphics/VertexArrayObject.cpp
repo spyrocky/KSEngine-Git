@@ -24,6 +24,10 @@ VertexArrayObject::VertexArrayObject(GeometricShapes ChosenShape)
 		ChosenPositions = TrapeziumPositions;
 		ChosenIndices = TrapeziumIndices;
 		break;
+	case GeometricShapes::Heart:
+		ChosenPositions = HeartPositions;
+		ChosenIndices = HeartIndices;
+		break;
 	case GeometricShapes::Circle:
 		ChosenPositions = CirclePositions;
 		ChosenIndices = CircleIndices;
