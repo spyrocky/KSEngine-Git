@@ -65,5 +65,6 @@
     <None Include="Game\Shaders\VertexShader\VertexShader.sfrag" />
     <None Include="Game\Shaders\TextureShader\TextureShader.sfrag" />
     <None Include="Game\Shaders\TextureShader\TextureShader.svert" />
+    <None Include="Game\Shaders\SimpleShader\SimpleShader.sfrag" />
   </ItemGroup>
 </Project>

@@ -30,31 +30,20 @@ const IndicesMatrix SquareIndices{
 };
 
 
-const PositionMatrix TrapeziumPositions{
-	// x	// y	// z	//Colour			// tex coorcs
-	-0.5f,	-0.5f,	0.0f,	0.45f, 0.0f, 0.8f,	0.0f, 0.0f,	// bottom left 0
-	 0.5,	-0.5f,	0.0f,	0.45f, 0.0f, 0.8f,	1.0f, 0.0f,	// bottom right 1
-	 0.25f,	 0.25f,	0.0f,	0.45f, 0.0f, 0.8f,	1.0f, 1.0f,	// top right 2
-	-0.25f,	 0.25f,	0.0f,	0.45f, 0.0f, 0.8f,	0.0f, 1.0f,	// top left 3
-};
 
-const IndicesMatrix TrapeziumIndices{
-	0, 2, 3,		// Triangle 1
-	0, 1, 2			// Triangle 2
-};
 
 
 const PositionMatrix CirclePositions{
 	// x		// y		// z		//Colour			// tex coords
-	0.0f,		0.0f,		0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,	// Center Point 0
-	0.1825f,	0.5f,		0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,	// Top Right 1
-	0.5f,		0.1825f,	0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,	// Middle Top Right 2
-	0.5f,		-0.1825f,	0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,	// Middle Bottom Right 3
-	0.1825f,	-0.5f,		0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,	// Bottom Right 4
-	-0.1825f,	-0.5f,		0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,	// Bottom Left 5
-	-0.5f,		-0.1825f,	0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,	// Bottom Middle Right 6
-	-0.5f,		0.1825f,	0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,	// Top Middle Left 7
-	-0.1825f,	0.5f,		0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f,	// Top Left 8
+	0.0f,		0.0f,		0.0f,		1.0f, 1.0f, 0.0f,	0.0f, 0.0f,	// Center Point 0
+	0.1825f,	0.5f,		0.0f,		0.5f, 0.0f, 0.0f,	0.0f, 0.0f,	// Top Right 1
+	0.5f,		0.1825f,	0.0f,		0.5f, 0.0f, 0.0f,	0.0f, 0.0f,	// Middle Top Right 2
+	0.5f,		-0.1825f,	0.0f,		0.5f, 0.0f, 0.0f,	0.0f, 0.0f,	// Middle Bottom Right 3
+	0.1825f,	-0.5f,		0.0f,		0.5f, 0.0f, 0.0f,	0.0f, 0.0f,	// Bottom Right 4
+	-0.1825f,	-0.5f,		0.0f,		0.5f, 0.0f, 0.0f,	0.0f, 0.0f,	// Bottom Left 5
+	-0.5f,		-0.1825f,	0.0f,		0.5f, 0.0f, 0.0f,	0.0f, 0.0f,	// Bottom Middle Right 6
+	-0.5f,		0.1825f,	0.0f,		0.5f, 0.0f, 0.0f,	0.0f, 0.0f,	// Top Middle Left 7
+	-0.1825f,	0.5f,		0.0f,		0.5f, 0.0f, 0.0f,	0.0f, 0.0f,	// Top Left 8
 };
 
 const IndicesMatrix CircleIndices{
@@ -91,12 +80,9 @@ const PositionMatrix HeartPositions{
 
 const IndicesMatrix HeartIndices{
 	
-	0, 1, 2,  
-	2, 4, 3, 
-	1, 4, 5
-
-	
-	
+	0, 1, 2,  // Top left Triangle
+	2, 4, 3,  // Top right Triangle
+	1, 4, 5   // Bottom Triangle
 };
 
 

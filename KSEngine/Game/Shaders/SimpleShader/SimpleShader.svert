@@ -1,0 +1,11 @@
+#version 460 core
+
+layout(location = 0) in vec3 InPosition; //get the 0 attrib pointer
+
+out vec4 Colour;
+
+void main(){
+	gl_Position = InPosition;
+
+	Colour = vec4(1.0, 0.0, 0.0, 1.0);
+}

@@ -26,23 +26,6 @@ void Game::Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight)
 	Run();
 }
 
-/*
-int Game::GameMenu()
-{
-	int inputkey = 0;
-
-	// Create menu interface for assessment 1
-
-	cout << " - Game Menu - " << endl;
-	cout << " Press 1 for create Triangle" << endl;
-	cout << " Press 2 for create Square" << endl;
-	cout << " Press 3 for create Circle" << endl;
-	cout << " Press 4 for create Trapezium" << endl;
-	cin >> inputkey;
-
-	return inputkey;
-}
-*/
 
 Game::Game()
 {
@@ -69,28 +52,16 @@ void Game::Run()
 		
 		// create a shader
 		Graphics->CreateShader({
-			L"Game/Shaders/TextureShader/TextureShader.svert",
-			L"Game/Shaders/TextureShader/TextureShader.sfrag"
+			L"Game/Shaders/VertexShader/VertexShader.svert",
+			L"Game/Shaders/VertexShader/VertexShader.sfrag"
 			});
 
-		// Set/create texture image 
-		//Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
-
+	
 		// create VAOs
+		Graphics->CreateVAO(GeometricShapes::Triangle);
 		Graphics->CreateVAO(GeometricShapes::Square);
-		Graphics->CreateVAO(GeometricShapes::Circle);
-		Graphics->CreateVAO(GeometricShapes::Triangle);		
+		Graphics->CreateVAO(GeometricShapes::Circle);			
 		Graphics->CreateVAO(GeometricShapes::Heart);
-
-		
-		
-
-		
-			
-		
-
-		
-
 		
 	}
 

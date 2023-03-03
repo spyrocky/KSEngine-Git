@@ -121,28 +121,36 @@ void GraphicsEngine::Draw()
 		// move the object
 		glm::mat4 transform = glm::mat4(1.0f);
 
-		if (index == 0) {
+		if (index == 0) { //Triangle - change color RGB, scale , move screen position
 			// move in the x, y, or z, direction based on the amount added
 			transform = glm::translate(transform, glm::vec3(0.5f, 0.0f, 0.0f));
-
-			// radians is rotation amount
-			// vec3 is the direction to rotate in
-			transform = glm::rotate(transform, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-
 			// x and y will work for out 2D shapes
 			// z must be larger than 0 or you wont see the object (1 is default)
 			transform = glm::scale(transform, glm::vec3(0.5f, 0.5f, 1.0f));
 		}
-		else if (index == 1) {
+		else if (index == 1) { //Square - change to yellow , rotate 45 degree to diamond shape , move screen position 
+			// move in the x, y, or z, direction based on the amount added
 			transform = glm::translate(transform, glm::vec3(-0.5f, 0.0f, 0.0f));
-			transform = glm::scale(transform, glm::vec3(0.5f, 0.5f, 1.0f));
+			// radians is rotation amount
+			// vec3 is the direction to rotate in
+			transform = glm::rotate(transform, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			// x and y will work for out 2D shapes
+			// z must be larger than 0 or you wont see the object (1 is default)
+			transform = glm::scale(transform, glm::vec3(0.25f, 0.25f, 1.0f));
+
 		}
-		else if (index == 2) {
+		else if (index == 2) { //Circle - scale , move screen position
+			// move in the x, y, or z, direction based on the amount added
 			transform = glm::translate(transform, glm::vec3(0.0f, 0.5f, 0.0f));
-			transform = glm::scale(transform, glm::vec3(0.5f, 0.5f, 1.0f));
+			// x and y will work for out 2D shapes
+			// z must be larger than 0 or you wont see the object (1 is default)
+			transform = glm::scale(transform, glm::vec3(0.75f, 0.75f, 1.0f));
 		}
-		else if (index == 3) {
+		else if (index == 3) { //Heart - scale , move screen position
+			// move in the x, y, or z, direction based on the amount added
 			transform = glm::translate(transform, glm::vec3(0.0f, -0.5f, 0.0f));
+			// x and y will work for out 2D shapes
+			// z must be larger than 0 or you wont see the object (1 is default)
 			transform = glm::scale(transform, glm::vec3(0.25f, 0.25f, 1.0f));
 		}
 

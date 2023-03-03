@@ -37,7 +37,6 @@ enum class GeometricShapes {
 	Triangle = 0,
 	Square,
 	Circle,
-	Trapezium,
 	Heart
 };
 
