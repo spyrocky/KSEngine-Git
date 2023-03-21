@@ -1,32 +1,39 @@
 #include "KSEngine/Graphics/GraphicsEngine.h"
-#include "KSEngine/Graphics/VertexArrayObject.h"
-#include "KSEngine/Graphics/ShaderProgram.h"
-#include "KSEngine/Graphics/Texture.h"
-
-#include "glm/gtc/matrix_transform.hpp"
 #include "GL/glew.h"
+#include "KSEngine/Graphics/Mesh.h"
+#include "KSEngine/Graphics/ShaderProgram.h"
 #include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "KSEngine/Graphics/Texture.h"
+#include "KSEngine/Math/Transformations.h"
 
 GraphicsEngine::GraphicsEngine()
 {
 	SdlWindow = nullptr;
 	SdlGLContext = NULL;
 	bWireframeMode = false;
+	EngineDefaultCam = Vector3(0.0f, 0.0f, -2.0f);
 }
 
 GraphicsEngine::~GraphicsEngine()
 {
-	// remove textures from memory
-	TextureStack.clear();
+	//clear the mesh stack
+	MeshStack.clear();
 
-	// this will handle deleting the SDL window from memory
+	//clear shader
+	Shader = nullptr;
+
+	//remove textures from memory
+	TextureStack.clear();		//clear() empties the array/vector
+
+	//this will handle deleting the sdl window from memory
 	SDL_DestroyWindow(SdlWindow);
-	// destroy the GL context for SDL
+	//destroy the GL Context for sdl
 	SDL_GL_DeleteContext(SdlGLContext);
-	// close the SDL framework
+	//close the sdl window
 	SDL_Quit();
 
-	cout << "Destroy Graphics Engine..." << endl;
+	cout << "Destroyed Graphics Engine..." << endl;
 }
 
 bool GraphicsEngine::InitGE(const char* WTitle, bool bFullscreen, int WWidth, int WHeight)
@@ -87,6 +94,8 @@ bool GraphicsEngine::InitGE(const char* WTitle, bool bFullscreen, int WWidth, in
 		cout << "GLEW failed: " << glewGetErrorString(InitGLEW) << endl;
 		return false;
 	}
+	//enable 3d depth
+	glEnable(GL_DEPTH_TEST);
 
 	return true;
 }
@@ -103,7 +112,7 @@ void GraphicsEngine::ClearGraphics()
 	glClearColor(0.23f, 0.38f, 0.47f, 1.0f);
 
 	// clear the screen
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void GraphicsEngine::Draw()
@@ -112,6 +121,7 @@ void GraphicsEngine::Draw()
 
 	HandleWireframeMode(false);
 
+<<<<<<< Updated upstream
 	unInt index = 0;
 	// TODO: Add anything that renders between these two functions
 	for (VAOPtr VAO : VAOs) {
@@ -148,6 +158,11 @@ void GraphicsEngine::Draw()
 		VAO->Draw();
 
 		index++;
+=======
+	//run through each mesh and call its draw method
+	for (MeshPtr LMesh : MeshStack) {
+		LMesh->Draw();
+>>>>>>> Stashed changes
 	}
 
 	PresentGraphics();
@@ -158,53 +173,61 @@ SDL_Window* GraphicsEngine::GetWindow() const
 	return SdlWindow;
 }
 
-void GraphicsEngine::CreateVAO(GeometricShapes Shape)
+MeshPtr GraphicsEngine::CreateSimpleMeshShape(GeometricShapes Shape, ShaderPtr MeshShader, TexturePtrStack MeshTextures)
 {
-	// create a new VAO as a shared pointer
-	VAOPtr NewVAO = make_shared<VAO>(Shape);
-	// add it to the stack
-	VAOs.push_back(NewVAO);
+	//initialize a new mesh class
+	MeshPtr NewMesh = make_shared<Mesh>();
+
+	//make sure it worked
+	if (!NewMesh->CreateSimpleShape(Shape, MeshShader, MeshTextures))
+		return nullptr;
+
+	//add mesh into the stack of meshses to be rendered
+	MeshStack.push_back(NewMesh);
+
+	//return the new mesh
+	return NewMesh;
 }
 
-void GraphicsEngine::CreateShader(VFShaderParams ShaderFilePaths)
+ShaderPtr GraphicsEngine::CreateShader(VFShaderParams ShaderFilePaths)
 {
-	// create a new shader class
+	//create a new shader class
 	ShaderPtr NewShader = make_shared<ShaderProgram>();
-
-	// initialise the shader into openGL
+	//initialize the shader into openGL using the file paths
 	NewShader->InitVFShader(ShaderFilePaths);
-
-	// add the shader to our graphics engine
+	//add the shader to our graphics engine
 	Shader = NewShader;
+
+	return NewShader;
 }
 
 TexturePtr GraphicsEngine::CreateTexture(const char* FilePath)
 {
 	TexturePtr NewTexture = nullptr;
 
-	// Run through all the textures and check if one with same path exists
+	//Run through all the texture and check if one with the same path exists
 	for (TexturePtr TestTexture : TextureStack) {
-		// if we find a texture with the same file path
+		//if we find a texture with the same file path
 		if (TestTexture->GetFilePath() == FilePath) {
-			// pass in the already created texture
+			//pass in the already created texture
 			NewTexture = TestTexture;
-			cout << "Texture found! Assigning current texture." << endl;
+			cout << "Texture found: Assigning current texture." << endl;
 			break;
 		}
 	}
 
-	// if there is no texture alredy in existance
+	//if there is no texture already existing
 	if (NewTexture == nullptr) {
 		cout << "Creating a new texture..." << endl;
 
-		// create a new texture as a shared_ptr
+		//create a new texture as a shared ptr
 		NewTexture = make_shared<Texture>();
 
-		// if the file was found, assign it to the texture stack
+		//if the file was found assign it to the texture stack
 		if (NewTexture->CreateTextureFromFilePath(FilePath)) {
-			cout << "Texture " << NewTexture->GetID() << " creation success! Adding to Texture Stack." << endl;
+			cout << "Texture " << NewTexture->GetID() << " creation successful! Adding to Texture Stack." << endl;
 
-			// ass the texture to the texture stack
+			//add the texture to the texture stack
 			TextureStack.push_back(NewTexture);
 		}
 	}
@@ -212,16 +235,43 @@ TexturePtr GraphicsEngine::CreateTexture(const char* FilePath)
 	return NewTexture;
 }
 
+void GraphicsEngine::ApplyScreenTransformation(ShaderPtr Shader)
+{
+	// the andgle of camera plane - basically your zoom
+	float FOV = 70.0f;
+	// position of the camera / view space 
+	Vector3 ViewPosition = EngineDefaultCam;
+	// find the size of the screen and calculate the aspect ratio
+	int WWidth, WHeight = 0;
+	//use sdl to get the size of window
+	SDL_GetWindowSize(SdlWindow, &WWidth, &WHeight);
+	//calculate the aspect ratio from window size
+	float AR = static_cast<float>(WWidth) / static_cast<float>(max(WHeight, 1));
+	//create the default coordinate of the projection and view
+	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 projection = glm::mat4(1.0f);
+
+	//update the coordinates for 3d
+	view = glm::translate(view, ViewPosition);
+	//crete the perspective view to allow us to see in 3d
+	// also adjust the near and far clip
+	projection = glm::perspective(glm::radians(FOV), AR, 0.01f,  1000.0f);
+
+	Shader->SetMat4("view", view);
+	Shader->SetMat4("projection", projection);
+}
+
 void GraphicsEngine::HandleWireframeMode(bool bShowWireframeMode)
 {
-	// if wireframe mode is set, change it, and visa versa
+	// if wireframe mode is set, change it and vice versa
 	if (bShowWireframeMode != bWireframeMode) {
 		bWireframeMode = bShowWireframeMode;
 
-		// change how OpenGL renders between the vertices
+		//change how openGL renders between vertices
 		if (bWireframeMode) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
+
 		else {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}

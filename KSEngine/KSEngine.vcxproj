@@ -136,18 +136,23 @@
     <ClInclude Include="includes\KSEngine\CoreMinimal.h" />
     <ClInclude Include="includes\KSEngine\Game.h" />
     <ClInclude Include="includes\KSEngine\Graphics\GraphicsEngine.h" />
+    <ClInclude Include="includes\KSEngine\Graphics\Mesh.h" />
     <ClInclude Include="includes\KSEngine\Graphics\ShaderProgram.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Texture.h" />
     <ClInclude Include="includes\KSEngine\Graphics\VertexArrayObject.h" />
+    <ClInclude Include="includes\KSEngine\input.h" />
+    <ClInclude Include="includes\KSEngine\Math\Transformations.h" />
     <ClInclude Include="includes\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\Source.cpp" />
     <ClCompile Include="source\KSEngine\Game.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\GraphicsEngine.cpp" />
+    <ClCompile Include="source\KSEngine\Graphics\Mesh.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\ShaderProgram.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Texture.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\VertexArrayObject.cpp" />
+    <ClCompile Include="source\KSEngine\input.cpp" />
     <ClCompile Include="source\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>

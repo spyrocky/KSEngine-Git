@@ -8,31 +8,36 @@ public:
 	GraphicsEngine();
 	~GraphicsEngine();
 
-	// create the window
+	//create the window
 	bool InitGE(const char* WTitle, bool bFullscreen, int WWidth, int WHeight);
 
-	// show the newest frame graphics
+	//show the newest frame graphics
 	void PresentGraphics();
-	// clear the old frame graphics
+	//clear the old frame graphics
 	void ClearGraphics();
-
-	// handle the rendering of our graphics
+	//handle the rendering of graphics
 	void Draw();
 
-	// return the sdl window
+	//return the sdl window
 	SDL_Window* GetWindow() const;
 
-	// this is going to add a new VAO to the VAOStack using a shape define
-	void CreateVAO(GeometricShapes Shape);
+	//add a new VAO to the VAOStack using a shape define
+	MeshPtr CreateSimpleMeshShape(GeometricShapes Shape, ShaderPtr MeshShader, TexturePtrStack MeshTextures);
 
-	// add a new shader
-	// @param 1 - Vertex Shader
-	// @param 2 - Fragment Shader
-	void CreateShader(VFShaderParams ShaderFilePaths);
+	//add new shader
+	//@param 1 - Vertex Shader
+	//@param 2 - Fragment Shader
+	ShaderPtr CreateShader(VFShaderParams ShaderFilePaths);
 
-	// create a texture and add it to the texture stack
-	// avoid duplicates
+	//create a texture and add it to the texture stack
+	//avoid duplicates
 	TexturePtr CreateTexture(const char* FilePath);
+
+	//
+	void ApplyScreenTransformation(ShaderPtr Shader);
+
+	//
+	Vector3 EngineDefaultCam;
 
 private:
 	// this will hold the window
@@ -50,4 +55,9 @@ private:
 	ShaderPtr Shader;
 	// store a vector of textures
 	TexturePtrStack TextureStack;
+
+	//store all meshes in the game
+	MeshPtrStack MeshStack;
+
+	
 };

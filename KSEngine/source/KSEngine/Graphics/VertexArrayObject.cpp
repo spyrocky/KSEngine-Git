@@ -16,6 +16,10 @@ VertexArrayObject::VertexArrayObject(GeometricShapes ChosenShape)
 		ChosenPositions = TrianglePositions;
 		ChosenIndices = TriangleIndices;
 		break;
+	case GeometricShapes::Cube:
+		ChosenPositions = CubePositions;
+		ChosenIndices = CubeIndicies;
+		break;
 	case GeometricShapes::Square:
 		ChosenPositions = SquarePositions;
 		ChosenIndices = SquareIndices;
@@ -28,6 +32,7 @@ VertexArrayObject::VertexArrayObject(GeometricShapes ChosenShape)
 		ChosenPositions = CirclePositions;
 		ChosenIndices = CircleIndices;
 		break;
+
 	default:
 		break;
 	}

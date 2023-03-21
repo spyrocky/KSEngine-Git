@@ -36,6 +36,15 @@
     <ClInclude Include="includes\KSEngine\Graphics\VertexArrayObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\KSEngine\Graphics\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\KSEngine\Math\Transformations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\KSEngine\input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\stb_image\stb_image.cpp">
@@ -57,6 +66,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\KSEngine\Graphics\VertexArrayObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\KSEngine\Graphics\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\KSEngine\input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
