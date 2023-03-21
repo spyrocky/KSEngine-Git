@@ -121,7 +121,7 @@ void GraphicsEngine::Draw()
 
 	HandleWireframeMode(false);
 
-<<<<<<< Updated upstream
+
 	unInt index = 0;
 	// TODO: Add anything that renders between these two functions
 	for (VAOPtr VAO : VAOs) {
@@ -158,11 +158,11 @@ void GraphicsEngine::Draw()
 		VAO->Draw();
 
 		index++;
-=======
+
 	//run through each mesh and call its draw method
 	for (MeshPtr LMesh : MeshStack) {
 		LMesh->Draw();
->>>>>>> Stashed changes
+
 	}
 
 	PresentGraphics();

@@ -2,6 +2,7 @@
 
 #include "SDL2/SDL.h"
 #include "KSEngine/CoreMinimal.h"
+#include <KSEngine/Math/Transformations.h>
 
 class GraphicsEngine {
 public:

@@ -17,7 +17,7 @@ void Game::DestroyGameInstance()
     delete GameInstance;
 }
 
-<<<<<<< Updated upstream
+
 void Game::Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight)
 {
 	Graphics = make_shared<GraphicsEngine>();
@@ -29,8 +29,6 @@ void Game::Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight)
 	Run();
 }
 
-=======
->>>>>>> Stashed changes
 Game::Game()
 {
     cout << "Game Initialized" << endl;
@@ -65,7 +63,6 @@ void Game::Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight)
 
 void Game::Run()
 {
-<<<<<<< Updated upstream
 	if (!bIsGameOver) {
 		// create a shader
 		Graphics->CreateShader({
@@ -76,10 +73,10 @@ void Game::Run()
 		Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
 
 		// create VAOs
-		Graphics->CreateVAO(GeometricShapes::Square);
+		/*Graphics->CreateVAO(GeometricShapes::Square);
 		Graphics->CreateVAO(GeometricShapes::Circle);
 		Graphics->CreateVAO(GeometricShapes::Trapezium);
-		Graphics->CreateVAO(GeometricShapes::Triangle);
+		Graphics->CreateVAO(GeometricShapes::Triangle);*/
 	}
 
 	// as long as the game is not over run the loop
@@ -91,7 +88,7 @@ void Game::Run()
 		// render the screen based on the 2 functions above
 		Draw();
 	}
-=======
+
     if (!bIsGameOver) {
 
         //Create input class to detect input
@@ -110,7 +107,7 @@ void Game::Run()
         //create meshes
         Poly = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TConcrete });
         Poly2 = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TGride });
->>>>>>> Stashed changes
+
 
         MeshPtr test = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TConcrete });
   
@@ -135,7 +132,7 @@ void Game::Run()
 
 void Game::ProcessInput()
 {
-<<<<<<< Updated upstream
+
 	// TODO: Handle Input
 	SDL_Event PollEvent;
 
@@ -150,10 +147,10 @@ void Game::ProcessInput()
 			break;
 		}
 	}
-=======
+
     //run the input detection for oue game input
     GameInput->ProcessInput();
->>>>>>> Stashed changes
+
 }
 
 void Game::Update()

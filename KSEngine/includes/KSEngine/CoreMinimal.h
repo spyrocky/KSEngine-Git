@@ -44,13 +44,10 @@ enum class GeometricShapes {
 	Triangle = 0,
 	Polygon,
 	Circle,
-<<<<<<< Updated upstream
-	Trapezium
-=======
+
 	Heart,
 	Cube,
-	Square,
->>>>>>> Stashed changes
+
 };
 
 //store the parameters required to create a shader program

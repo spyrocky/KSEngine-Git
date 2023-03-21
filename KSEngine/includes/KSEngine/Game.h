@@ -16,8 +16,7 @@ public:
 	//loading the window
 	void Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight);
 
-<<<<<<< Updated upstream
-=======
+
 	//get precise delta time
 	double GetDeltaTime() { return DeltaTime; }
 
@@ -30,7 +29,7 @@ public:
 	//Set the bIsGameOver tpo true
 	void CloseApp() { bIsGameOver = true; }
 
->>>>>>> Stashed changes
+
 private:
 	Game();
 	~Game();
