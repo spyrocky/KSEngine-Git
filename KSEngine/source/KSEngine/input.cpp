@@ -17,6 +17,19 @@ void Input::ProcessInput()
     while (SDL_PollEvent(&PollEvent)) {
         //checking what input was pressed
         switch (PollEvent.type) {
+        case SDL_MOUSEBUTTONDOWN:
+            // PollEvent.button.button gets the index of the mpuse button pressed
+            SetMouseButtonStates(PollEvent.button.button, true);
+            break;
+        case SDL_MOUSEBUTTONUP:
+            SetMouseButtonStates(PollEvent.button.button, false);
+            break;
+        case SDL_MOUSEMOTION:
+            //SetMouseButtonStates(PollEvent.button.button, true);
+            break;
+        case SDL_MOUSEWHEEL:
+            //SetMouseButtonStates(PollEvent.button.button, true);
+            break;
         case SDL_KEYDOWN:
             //update all the keys on the keyboard with up or down states
             KeyboardState = SDL_GetKeyboardState(NULL);
@@ -42,3 +55,13 @@ bool Input::IsKeyDown(SDL_Scancode Key)
     }
 
     return static_cast<bool>(KeyboardState[Key]);}
+
+bool Input::IsMouseButtonDown(MouseButtons Button)
+{
+    return false;
+}
+
+void Input::SetMouseButtonStates(Uint8 ButtonIndex, bool CurrentState)
+{
+    MouseButtonStates[ButtonIndex] = CurrentState;
+}
