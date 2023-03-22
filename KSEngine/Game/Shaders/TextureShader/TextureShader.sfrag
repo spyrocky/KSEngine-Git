@@ -3,10 +3,10 @@
 in vec2 TexCoords;
 out vec4 OutColour;
 
-// texture data
+//texture data
 uniform sampler2D TextureColour;
 
 void main() {
-	// texture() accepts colour and coordinates to create an open gl texture
+	// texture() accepts colour and coordinates to create an openGL texture
 	OutColour = texture(TextureColour, TexCoords);
 }

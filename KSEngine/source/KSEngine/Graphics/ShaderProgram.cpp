@@ -1,7 +1,7 @@
-#include <fstream>
-#include <sstream>
 #include "KSEngine/Graphics/ShaderProgram.h"
 #include "GL/glew.h"
+#include <fstream>
+#include <sstream>
 #include "glm/gtc/type_ptr.hpp"
 
 ShaderProgram::ShaderProgram()
@@ -11,17 +11,17 @@ ShaderProgram::ShaderProgram()
 
 ShaderProgram::~ShaderProgram()
 {
-	for (unInt VFShaderID : VFShaderIDs) {
-		// remove the shader from the program
+	for (UNint VFShaderID : VFShaderIDs) {
+		//remove the shader from the program
 		glDetachShader(ProgramID, VFShaderID);
-		// delete the shader from memory
+		//delete the shader from memory
 		glDeleteShader(VFShaderID);
 	}
 
-	// this will delete the shader program from openGL
+	//this will delete the shader program from openGL
 	glDeleteProgram(ProgramID);
 
-	cout << "Shader Program" << ProgramID << "has been destroyed" << endl;
+	cout << "Shader Program " << ProgramID << " has been destroyed." << endl;
 }
 
 bool ShaderProgram::InitVFShader(VFShaderParams ShaderFilePaths)
@@ -29,7 +29,7 @@ bool ShaderProgram::InitVFShader(VFShaderParams ShaderFilePaths)
 	ProgramID = glCreateProgram();
 
 	if (ProgramID < 1) {
-		cout << "Shader Program | Can't assign program ID." << endl;
+		cout << "Shader Program | Can't assign ProgramID." << endl;
 		return false;
 	}
 
@@ -39,7 +39,8 @@ bool ShaderProgram::InitVFShader(VFShaderParams ShaderFilePaths)
 	if (!VShader || !FShader) {
 		return false;
 	}
-	// fail the whole function if Link() fails
+
+	//failed the whole funuction if Link fails
 	return Link();
 }
 
@@ -50,45 +51,44 @@ void ShaderProgram::RunShader()
 
 void ShaderProgram::SetMat4(const char* ShaderVariable, glm::mat4 Value)
 {
-	// finding the uniform mat4 called ShaderVariable and overwritting the value
-	glUniformMatrix4fv(
-		glGetUniformLocation(ProgramID, ShaderVariable), 1, GL_FALSE, value_ptr(Value)
-	);
+	//finding the uniform mat4 called ShadereVariable and overwriting the value
+	glUniformMatrix4fv(glGetUniformLocation(ProgramID, ShaderVariable), 1, GL_FALSE, value_ptr(Value));
 }
 
 void ShaderProgram::SetInt(const char* ShaderVarName, int Value)
 {
-	// find the uniform int value with the ShaderVarName and assign it the value
+	//find the uniform int value with ShaderVarName and assign it the value 
 	glUniform1i(glGetUniformLocation(ProgramID, ShaderVarName), Value);
+
 }
 
 bool ShaderProgram::AttachShader(const wchar_t* ShaderFilePath, ShaderTypes Type)
 {
-	// store the shader code
+	//store the shader code
 	string ShaderCode;
-	// store the file path in a file stream
+	//store the file path in a file stream
 	ifstream FilePathStream(ShaderFilePath);
 
-	// check if the stream found the file
+	//check if the stream found the file
 	if (!FilePathStream.is_open()) {
 		wclog << "Shader Program | " << ShaderFilePath << " not found." << endl;
 		return false;
 	}
 
-	// temporarily hold the shader for conversion in a string stream
+	//temporarily hold the shader for conversion in a string stream
 	stringstream RawShaderCode;
-	// convert the file to a single stream
+	//convert the file to a single string
 	RawShaderCode << FilePathStream.rdbuf();
-	// convert it into a readable string
+	//convert it into a readable string
 	ShaderCode = RawShaderCode.str();
-	// close the stream to the file
+	//close the stream to the file
 	FilePathStream.close();
 
-	// initialise the shader ID variable for this specific shader
-	unInt ShaderID = 0;
-	// change what happens with the ID depending on the type of shader
-	switch (Type)
-	{
+	//initialise the shader ID variable for this specific shader
+	UNint ShaderID = 0;
+
+	//change what happens with the ID depending on the type of shader
+	switch (Type) {
 	case ShaderTypes::Vertex:
 		ShaderID = glCreateShader(GL_VERTEX_SHADER);
 		VFShaderIDs[0] = ShaderID;
@@ -101,46 +101,46 @@ bool ShaderProgram::AttachShader(const wchar_t* ShaderFilePath, ShaderTypes Type
 		break;
 	}
 
-	// put our string code into a character array
+	//put out string code into a char array
 	const char* ShaderCodePtr = ShaderCode.c_str();
-	// add the shader code to the shader that we created above
+	//add the shader code to the shader that we created
 	glShaderSource(ShaderID, 1, &ShaderCodePtr, NULL);
-	// complie the shader
+	//compile the shader
 	glCompileShader(ShaderID);
 
-	// initialise a variable that will tell us if the shader has any logs
+	//initialise a variable that will tell us if the shader has any logs
 	int LogLength = 0;
-	// check if there are any logs and add them to the LogLength
+	//check if there are nay logs and addthem to the LogLength
 	glGetShaderiv(ShaderID, GL_INFO_LOG_LENGTH, &LogLength);
-	// print the log if there were any
+	//print the log if there were any
 	if (LogLength > 0) {
-		// store the message
+		//store the message
 		vector<char> LogMessage(LogLength + 1);
-		// add the characters into the vector array
+		//add the characters into the vector array
 		glGetShaderInfoLog(ShaderID, LogLength, NULL, &LogMessage[0]);
 
-		// check if the compile failed
+		//check if  the compile failed
 		int CompileStatus = GL_TRUE;
-		// get the complie status - return a GL_TRUE if successful or GL_FALSE
+		//get the compile status - return GL_TRUE if successful or GL_FALSE
 		glGetShaderiv(ShaderID, GL_COMPILE_STATUS, &CompileStatus);
 
 		if (CompileStatus == GL_TRUE) {
 			wclog << "Shader Program | Compiler | " << ShaderFilePath <<
-				" compiled successfully with the following log:" << endl
-				<< &LogMessage[0] << endl;
+				" compiled successfully with the following log:" << endl <<
+				&LogMessage[0] << endl;
 		}
 		else {
 			wclog << "Shader Program | Compiler | " << ShaderFilePath <<
-				" failed to compile with the following log:" << endl
-				<< &LogMessage[0] << endl;
+				" failed to compile with the following log:" << endl <<
+				&LogMessage[0] << endl;
 			return false;
 		}
 	}
 	else {
-		wclog << "Shader Program | " << ShaderFilePath << " compiled successfully." << endl;
+		wclog << "Shader Program | " << ShaderFilePath << " compiled successfully with no logs." << endl;
 	}
 
-	// attach the shader to the program ID
+	//attach the shader to the program ID
 	glAttachShader(ProgramID, ShaderID);
 
 	return true;
@@ -148,10 +148,10 @@ bool ShaderProgram::AttachShader(const wchar_t* ShaderFilePath, ShaderTypes Type
 
 bool ShaderProgram::Link()
 {
-	// add the program to openGL
+	//add the program to openGL
 	glLinkProgram(ProgramID);
 
-	// check the link for logs and errors
+	//check the link for logs and errors
 	int LogLength = 0;
 	glGetShaderiv(ProgramID, GL_INFO_LOG_LENGTH, &LogLength);
 
@@ -163,19 +163,18 @@ bool ShaderProgram::Link()
 		glGetShaderiv(ProgramID, GL_COMPILE_STATUS, &CompileStatus);
 
 		if (CompileStatus == GL_TRUE) {
-			wclog << "Shader Program | Successfully linked with the following log:" << endl
-				<< &LogMessage[0] << endl;
+			wclog << "Shader Program | Successfullly linked with the following log:" << endl <<
+				&LogMessage[0] << endl;
 		}
 		else {
-			wclog << "Shader Program | Failed to link with the following log:" << endl
-				<< &LogMessage[0] << endl;
+			wclog << "Shader Program | Failed to link with the following log:" << endl <<
+				&LogMessage[0] << endl;
 			return false;
 		}
 	}
 	else {
-		wclog << "Shader Program | Successfully linked with no logs:" << endl;
+		wclog << "Shader Program | Successfullly linked with no logs." << endl;
 	}
-
 
 	return true;
 }

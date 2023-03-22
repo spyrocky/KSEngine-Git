@@ -5,13 +5,13 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "KSEngine/Graphics/Texture.h"
-#include "KSEngine/Math/Transformations.h"
 
 GraphicsEngine::GraphicsEngine()
 {
 	SdlWindow = nullptr;
 	SdlGLContext = NULL;
 	bWireframeMode = false;
+	//initialize camera -2.0 back on z axis
 	EngineDefaultCam = Vector3(0.0f, 0.0f, -2.0f);
 }
 
@@ -38,63 +38,63 @@ GraphicsEngine::~GraphicsEngine()
 
 bool GraphicsEngine::InitGE(const char* WTitle, bool bFullscreen, int WWidth, int WHeight)
 {
-	// make sure SDL initialises
+	//make sure sdl initialises
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-		cout << "SDL failed: " << SDL_GetError() << endl;
+		cout << "SDL Failed: " << SDL_GetError() << endl;
 		return false;
 	}
 
-	// Use OpenGL 4.6 compatability and set default attributes
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); // OpenGL version <"4"> .6 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1); // OpenGL version  4 <".6">
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY); // Using default profile
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // Transparency level
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8); // How many bits of allocation awarded to "RED" colour
-	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8); // How many bits of allocation awarded to "GREEN" colour
-	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8); // How many bits of allocation awarded to "BLUE" colour
+	//Use OpenGL 4.6 compatibility and set default attributes
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 
-	// Set the fullscreen flag
-	int FullScreenFlag = 0;
+	//Set the fullscreen flag
+	int FullscreenFlag = 0;
 
 	if (bFullscreen) {
-		FullScreenFlag = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
+		FullscreenFlag = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
 	}
 	else {
-		FullScreenFlag = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+		FullscreenFlag = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 	}
 
-	// create the SDL2 window
+	//create the sdl2 window
 	SdlWindow = SDL_CreateWindow(
-		WTitle, // title of the window
-		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, // location of the window
-		WWidth, WHeight, // width and height of the window
-		FullScreenFlag
+		WTitle,
+		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		WWidth, WHeight,
+		FullscreenFlag
 	);
 
-	// if the window fails then error log
+	//if the window fails
 	if (SdlWindow == nullptr) {
-		cout << "SDL window failed: " << SDL_GetError() << endl;
-		return false;
+		cout << "SDL Window Failed: " << SDL_GetError() << endl;
 	}
 
-	// add all the gl attributes to the window
+	//add all the gl attributes to the window
 	SdlGLContext = SDL_GL_CreateContext(SdlWindow);
 
 	if (SdlGLContext == NULL) {
-		cout << "SDL GL Context failed: " << SDL_GetError() << endl;
+		cout << "SDL GL Context Failed: " << SDL_GetError() << endl;
 		return false;
 	}
 
-	// To make glew work we need to mark experimental true
+	//to make glew work we need to mark experimental true
 	glewExperimental = GL_TRUE;
 
 	const GLenum InitGLEW = glewInit();
 
 	if (InitGLEW != GLEW_OK) {
-		cout << "GLEW failed: " << glewGetErrorString(InitGLEW) << endl;
+		cout << "Glew Failed: " << glewGetErrorString(InitGLEW) << endl;
 		return false;
 	}
-	//enable 3d depth
+
+	//enable 3D depth
 	glEnable(GL_DEPTH_TEST);
 
 	return true;
@@ -102,16 +102,16 @@ bool GraphicsEngine::InitGE(const char* WTitle, bool bFullscreen, int WWidth, in
 
 void GraphicsEngine::PresentGraphics()
 {
-	// present the new graphics using opengl
+	//present the new graphics using opengl
 	SDL_GL_SwapWindow(SdlWindow);
 }
 
 void GraphicsEngine::ClearGraphics()
 {
-	// set the background colour
+	//set the background color
 	glClearColor(0.23f, 0.38f, 0.47f, 1.0f);
 
-	// clear the screen
+	//clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -121,48 +121,9 @@ void GraphicsEngine::Draw()
 
 	HandleWireframeMode(false);
 
-
-	unInt index = 0;
-	// TODO: Add anything that renders between these two functions
-	for (VAOPtr VAO : VAOs) {
-		Shader->RunShader();
-
-		// move the object
-		glm::mat4 transform = glm::mat4(1.0f);
-
-		if (index == 0) {
-			// move in the x, y, or z, direction based on the amount added
-			transform = glm::translate(transform, glm::vec3(0.5f, 0.0f, 0.0f));
-			// radians is rotation amount
-			// vec3 is the direction to rotate in
-			transform = glm::rotate(transform, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-			// x and y will work for out 2D shapes
-			// z must be larger than 0 or you wont see the object (1 is default)
-			transform = glm::scale(transform, glm::vec3(0.5f, 0.5f, 1.0f));
-		}
-		else if (index == 1) {
-			transform = glm::translate(transform, glm::vec3(-0.5f, 0.0f, 0.0f));
-			transform = glm::scale(transform, glm::vec3(0.5f, 0.5f, 1.0f));
-		}
-		else if (index == 2) {
-			transform = glm::translate(transform, glm::vec3(0.0f, 0.5f, 0.0f));
-			transform = glm::scale(transform, glm::vec3(0.5f, 0.5f, 1.0f));
-		}
-		else if (index == 3) {
-			transform = glm::translate(transform, glm::vec3(0.0f, -0.5f, 0.0f));
-			transform = glm::scale(transform, glm::vec3(0.25f, 0.25f, 1.0f));
-		}
-
-		Shader->SetMat4("transform", transform);
-		// draw each VAO
-		VAO->Draw();
-
-		index++;
-
 	//run through each mesh and call its draw method
 	for (MeshPtr LMesh : MeshStack) {
 		LMesh->Draw();
-
 	}
 
 	PresentGraphics();
@@ -235,27 +196,28 @@ TexturePtr GraphicsEngine::CreateTexture(const char* FilePath)
 	return NewTexture;
 }
 
-void GraphicsEngine::ApplyScreenTransformation(ShaderPtr Shader)
+void GraphicsEngine::ApplyScreenTransformations(ShaderPtr Shader)
 {
-	// the andgle of camera plane - basically your zoom
+	//the angle of the camera planes  - zoom
 	float FOV = 70.0f;
-	// position of the camera / view space 
+	//position of the camera/view space
 	Vector3 ViewPosition = EngineDefaultCam;
-	// find the size of the screen and calculate the aspect ratio
+	//find the size of the screen and calculate the aspect ratio
 	int WWidth, WHeight = 0;
-	//use sdl to get the size of window
+	//use SDL to get the size of the window
 	SDL_GetWindowSize(SdlWindow, &WWidth, &WHeight);
-	//calculate the aspect ratio from window size
+	//calculate the aspect ratio from the window size
 	float AR = static_cast<float>(WWidth) / static_cast<float>(max(WHeight, 1));
-	//create the default coordinate of the projection and view
+
+	//create the default coordinates for the projection and view
 	glm::mat4 view = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
 
-	//update the coordinates for 3d
+	//update the coordinates for 3D
 	view = glm::translate(view, ViewPosition);
-	//crete the perspective view to allow us to see in 3d
-	// also adjust the near and far clip
-	projection = glm::perspective(glm::radians(FOV), AR, 0.01f,  1000.0f);
+	//create the perspective view to allow us to see in 3D
+	//also adjusting the near and far clip
+	projection = glm::perspective(glm::radians(FOV), AR, 0.01f, 1000.0f);
 
 	Shader->SetMat4("view", view);
 	Shader->SetMat4("projection", projection);
@@ -277,5 +239,4 @@ void GraphicsEngine::HandleWireframeMode(bool bShowWireframeMode)
 		}
 
 		cout << "Wireframe Mode Updated..." << endl;
-	}
-}
+	}}

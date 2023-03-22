@@ -1,8 +1,7 @@
 #include "KSEngine/Game.h"
 #include "KSEngine/Graphics/Mesh.h"
 #include "KSEngine/Graphics/GraphicsEngine.h"
-#include "KSEngine/input.h"
-
+#include "KSEngine/Input.h"
 
 Game& Game::GetGameInstance()
 {
@@ -17,26 +16,12 @@ void Game::DestroyGameInstance()
     delete GameInstance;
 }
 
-
-void Game::Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight)
-{
-	Graphics = make_shared<GraphicsEngine>();
-
-	if (!Graphics->InitGE(WTitle, bFullscreen, WWidth, WHeight)) {
-		bIsGameOver = true;
-	}
-
-	Run();
-}
-
 Game::Game()
 {
     cout << "Game Initialized" << endl;
 
     Graphics = nullptr;
     bIsGameOver = false;
-
-    GameInput = new Input();
 }
 
 Game::~Game()
@@ -63,35 +48,8 @@ void Game::Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight)
 
 void Game::Run()
 {
-	if (!bIsGameOver) {
-		// create a shader
-		Graphics->CreateShader({
-			L"Game/Shaders/TextureShader/TextureShader.svert",
-			L"Game/Shaders/TextureShader/TextureShader.sfrag"
-			});
-
-		Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
-
-		// create VAOs
-		/*Graphics->CreateVAO(GeometricShapes::Square);
-		Graphics->CreateVAO(GeometricShapes::Circle);
-		Graphics->CreateVAO(GeometricShapes::Trapezium);
-		Graphics->CreateVAO(GeometricShapes::Triangle);*/
-	}
-
-	// as long as the game is not over run the loop
-	while (!bIsGameOver) {
-		// make sure we process what the user has done
-		ProcessInput();
-		// apply the logic base on the inputs and the game logic
-		Update();
-		// render the screen based on the 2 functions above
-		Draw();
-	}
-
     if (!bIsGameOver) {
-
-        //Create input class to detect input
+        //create an input object to detect input
         GameInput = new Input();
 
         //create a shader
@@ -101,18 +59,26 @@ void Game::Run()
             });
 
         //create textures
-        TexturePtr TConcrete = Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
-        TexturePtr TGride = Graphics->CreateTexture("Game/Textures/ColourGrid.jpg");
+        TexturePtr TBlueTiles = Graphics->CreateTexture("Game/Textures/BlueTiles.jpg");
+        TexturePtr TGreenMosaic = Graphics->CreateTexture("Game/Textures/GreenMosaic.jpg");
 
         //create meshes
-        Poly = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TConcrete });
-        Poly2 = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TGride });
+        Poly = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TGreenMosaic });
+        Poly2 = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TBlueTiles });
 
+        MeshPtr test = Graphics->CreateSimpleMeshShape(GeometricShapes::Polygon, TextureShader, { TBlueTiles });
 
-        MeshPtr test = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TConcrete });
-  
+        test->Transform.Rotation.y = 60.0f;
+
+        //initial transformations for the meshes
         Poly->Transform.Location.x = 1.0f;
+
         Poly2->Transform.Location.x = -1.0f;
+        //Tri->Transform.Location.x = -0.5f;
+
+        //Poly->Transform.Rotation.z = 45.0f;
+
+        //Poly->Transform.Scale = Vector3(0.5f);
     }
 
     //as long as the game is not over
@@ -132,25 +98,8 @@ void Game::Run()
 
 void Game::ProcessInput()
 {
-
-	// TODO: Handle Input
-	SDL_Event PollEvent;
-
-	//
-	while (SDL_PollEvent(&PollEvent)) {
-		//
-		switch (PollEvent.type) {
-		case SDL_QUIT: //
-			bIsGameOver = true;
-			break;
-		default:
-			break;
-		}
-	}
-
-    //run the input detection for oue game input
+    //run the input detection for our game input
     GameInput->ProcessInput();
-
 }
 
 void Game::Update()
@@ -172,46 +121,43 @@ void Game::Update()
     Poly->Transform.Rotation.x += 50.0f * GetFDeltaTime();
     Poly->Transform.Rotation.y += 50.0f * GetFDeltaTime();
 
-    Poly2->Transform.Rotation.z += 50.0f * GetFDeltaTime();
-    Poly2->Transform.Rotation.x += 50.0f * GetFDeltaTime();
-    Poly2->Transform.Rotation.y += 50.0f * GetFDeltaTime();
+    Poly2->Transform.Rotation.z -= 50.0f * GetFDeltaTime();
+    Poly2->Transform.Rotation.x -= 50.0f * GetFDeltaTime();
+    Poly2->Transform.Rotation.y -= 50.0f * GetFDeltaTime();
 
     Vector3 CameraInput = Vector3(0.0f);
-    //move cam forward
+    Vector3 CameraRotate = Vector3(0.0f);
+
+    //move camera foward
     if (GameInput->IsKeyDown(SDL_SCANCODE_W)) {
         CameraInput.z = 1.0f;
     }
-    //backward
+    //move camera backward
     if (GameInput->IsKeyDown(SDL_SCANCODE_S)) {
         CameraInput.z = -1.0f;
     }
-
-    //left
+    //move camera left
     if (GameInput->IsKeyDown(SDL_SCANCODE_A)) {
         CameraInput.x = 1.0f;
     }
-    //right
+    //move camera right
     if (GameInput->IsKeyDown(SDL_SCANCODE_D)) {
         CameraInput.x = -1.0f;
     }
-
-    //up
+    //move camera up
     if (GameInput->IsKeyDown(SDL_SCANCODE_Q)) {
         CameraInput.y = -1.0f;
     }
-    //dow
-    if (GameInput->IsKeyDown(SDL_SCANCODE_E)) {
-        CameraInput.y = 1.0f;
-    }
+    //rotate camera left
+    //if (GameInput->IsKeyDown(SDL_SCANCODE_LEFT)) {
+    //    CameraInput.y = 1.0f;
+    //}
+    ////rotate camera right
+    //if (GameInput->IsKeyDown(SDL_SCANCODE_RIGHT))
 
-    //speed for moveing cam
-    CameraInput *= 3.0f * GetDeltaTime();
+    CameraInput *= 1.0f * GetFDeltaTime();
 
     Graphics->EngineDefaultCam += CameraInput;
-
-    
-       
-    
 }
 
 void Game::Draw()
@@ -221,6 +167,5 @@ void Game::Draw()
 
 void Game::CloseGame()
 {
-    // TODO: Clean up code
     delete GameInput;
 }

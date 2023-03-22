@@ -4,7 +4,7 @@
 #include "KSEngine/Graphics/VertexArrayObject.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "KSEngine/Game.h"
-
+#include "KSEngine/Graphics/GraphicsEngine.h"
 
 Mesh::Mesh()
 {
@@ -51,7 +51,7 @@ void Mesh::Draw()
 	MeshShader->RunShader();
 
 	//Acticate the required texturesr for this mesh
-	for (unInt Index = 0; Index < MeshTextures.size(); Index++) {
+	for (UNint Index = 0; Index < MeshTextures.size(); Index++) {
 		//activating the texture through openGL
 		MeshTextures[Index]->ActivateTexture(Index);
 		//setting the textures number as the active texture in the shader
@@ -82,10 +82,8 @@ void Mesh::Draw()
 		MeshShader->SetMat4("model", MatTransform);
 	}
 
-	// create the world and screen transformation for this object
-	Game::GetGameInstance().GetGraphicsEngine()->ApplyScreenTransformation(MeshShader);
-
-
+	//create the world and screen positions for this object
+	Game::GetGameInstance().GetGraphics()->ApplyScreenTransformations(MeshShader);
 
 	//draw the VAO
 	MeshVAO->Draw();

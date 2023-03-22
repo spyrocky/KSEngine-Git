@@ -2,11 +2,9 @@
 #include "KSEngine/Game.h"
 #include <iostream>
 
-using namespace std;
 Input::Input()
 {
-    // Assign the current key by default
-
+    //assign the current keys by default
     KeyboardState = SDL_GetKeyboardState(NULL);
 }
 
@@ -20,7 +18,7 @@ void Input::ProcessInput()
         //checking what input was pressed
         switch (PollEvent.type) {
         case SDL_KEYDOWN:
-            // update all key on keyboard with up or down state
+            //update all the keys on the keyboard with up or down states
             KeyboardState = SDL_GetKeyboardState(NULL);
             break;
         case SDL_KEYUP:
@@ -39,10 +37,8 @@ bool Input::IsKeyDown(SDL_Scancode Key)
 {
     //make sure the keyboard state is set
     if (KeyboardState == nullptr) {
-        cout << "No keyboard state detected." << endl;
+        std::cout << "No keyboard state detected." << endl;
         return false;
     }
 
-    //return the result of the key
-	return static_cast<bool>(KeyboardState[Key]);
-}
+    return static_cast<bool>(KeyboardState[Key]);}
