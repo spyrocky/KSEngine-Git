@@ -54,8 +54,8 @@ void Game::Run()
 
         //create a shader
         ShaderPtr TextureShader = Graphics->CreateShader({
-            L"Game/Shader/TextureShader/TextureShader.svert",
-            L"Game/Shader/TextureShader/TextureShader.sfrag"
+            L"Game/Shaders/TextureShader/TextureShader.svert",
+            L"Game/Shaders/TextureShader/TextureShader.sfrag"
             });
 
         //create textures
