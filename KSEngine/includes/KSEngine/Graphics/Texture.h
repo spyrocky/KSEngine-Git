@@ -17,13 +17,13 @@ public:
 	bool CreateTextureFromFilePath(const char* FilePath);
 
 	//return the openGL texture ID
-	unInt GetID() const { return TextureID; }
+	UNint GetID() const { return TextureID; }
 
 	//bind the texture as the current texture in openGL
 	void BindTexture();
 
 	//assigns the relevant data to the current loaded texture
-	void ActivateTexture(unInt Index);
+	void ActivateTexture(UNint Index);
 
 	//clear the texture in openGL
 	static void ResetTexture();
@@ -33,7 +33,7 @@ public:
 
 private:
 	//hold the ID for the texture in OpenGL
-	unInt TextureID;
+	UNint TextureID;
 	//hold the filepath to avoid duplicates
 	const char* FilePath;
 };

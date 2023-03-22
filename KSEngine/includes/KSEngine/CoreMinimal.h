@@ -5,16 +5,15 @@
 
 using namespace std;
 
-typedef unsigned int unInt;
+typedef unsigned int UNint;
 
-// class/type definitions
-class GraphicsEngine;
+//class/type definitions
+class GraphicsEngine;		//forward declaring for circular dependency
 typedef shared_ptr<GraphicsEngine> GraphicsEnginePtr;
 
 class VertexArrayObject;
 typedef VertexArrayObject VAO;
 typedef shared_ptr<VAO> VAOPtr;
-typedef vector<VAOPtr> VAOStack;
 
 class Texture;
 typedef shared_ptr<Texture> TexturePtr;
@@ -27,16 +26,14 @@ class Mesh;
 typedef shared_ptr<Mesh> MeshPtr;
 typedef vector<MeshPtr> MeshPtrStack;
 
-
-
-// useful for shape data and VAO Matrices
-typedef vector<float> PositionMatrix;
-typedef vector<unInt> IndicesMatrix;
+//useful for shape data and VAOs
+typedef vector<float>  PositionMatrix;
+typedef vector<UNint> IndicesMatrix;
 
 //structure to handle matrices VAOs
 struct ShapeData {
 	vector<float> PositionMatrix;
-	vector<unInt> IndicesMatrix;
+	vector<UNint> IndicesMatrix;
 };
 
 //list of the geometric shapes in VAO
@@ -44,10 +41,7 @@ enum class GeometricShapes {
 	Triangle = 0,
 	Polygon,
 	Circle,
-
-	Heart,
-	Cube,
-
+	Cube
 };
 
 //store the parameters required to create a shader program

@@ -1,5 +1,4 @@
 #pragma once
-#include "KSEngine/Graphics/GraphicsEngine.h"
 #include "CoreMinimal.h"
 
 class Input;
@@ -16,20 +15,16 @@ public:
 	//loading the window
 	void Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight);
 
-
 	//get precise delta time
 	double GetDeltaTime() { return DeltaTime; }
 
 	//get less precise delta time
 	float GetFDeltaTime() { return static_cast<float>(DeltaTime); }
 
-	//return graphic
-	GraphicsEnginePtr GetGraphicsEngine() const { return Graphics; }
-
-	//Set the bIsGameOver tpo true
+	//return the graphics engine
+	GraphicsEnginePtr GetGraphics() { return Graphics; }
+	//set bIsGameOver to true
 	void CloseApp() { bIsGameOver = true; }
-
-
 private:
 	Game();
 	~Game();
@@ -60,10 +55,10 @@ private:
 	//the time between each frame
 	double DeltaTime;
 
-	//Read the input of the player
+	//read the input of the player
 	Input* GameInput;
 
-	//temporary mesh variables	
-	MeshPtr Poly;
+	//temporary mesh variables
 	MeshPtr Poly2;
+	MeshPtr Poly;
 };

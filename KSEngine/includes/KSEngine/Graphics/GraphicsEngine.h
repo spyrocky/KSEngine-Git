@@ -1,8 +1,7 @@
 #pragma once
-
-#include "SDL2/SDL.h"
 #include "KSEngine/CoreMinimal.h"
-#include <KSEngine/Math/Transformations.h>
+#include "SDL2/SDL.h"
+#include "KSEngine/Math/Transformations.h"
 
 class GraphicsEngine {
 public:
@@ -34,31 +33,28 @@ public:
 	//avoid duplicates
 	TexturePtr CreateTexture(const char* FilePath);
 
-	//
-	void ApplyScreenTransformation(ShaderPtr Shader);
-
-	//
-	Vector3 EngineDefaultCam;
+	//create the 3D space for the model to relate itself to
+	//screen and camera coordinates
+	void ApplyScreenTransformations(ShaderPtr Shader);
 
 private:
-	// this will hold the window
+	//this will hold the window
 	SDL_Window* SdlWindow;
-	// this will allow openGL to work in SDL
+	//this will allow openGL to work in sdl
 	SDL_GLContext SdlGLContext;
-	// stack all the VAOs
-	VAOStack VAOs;
-	// handle wireframe mode
+	//handle wireframe mode
 	void HandleWireframeMode(bool bShowWireframeMode);
-	// set wireframe
+	//set wireframe
 	bool bWireframeMode;
 
-	// single shader
+	//single shader
 	ShaderPtr Shader;
-	// store a vector of textures
+	//store a vector of textures
 	TexturePtrStack TextureStack;
-
 	//store all meshes in the game
 	MeshPtrStack MeshStack;
 
-	
+public:
+	//default camera position
+	Vector3 EngineDefaultCam;
 };
