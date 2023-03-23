@@ -25,6 +25,21 @@ private:
 	//update the mouse button state with the current state mouse
 	void SetMouseButtonStates(Uint8 ButtonIndex, bool CurrentState);
 
+	// handle the varibles that rely on mouse motion
+	void onMouseMove(SDL_MouseMotionEvent& MEvent);
+
+	// handle the varibles that rely on mouse scroll
+	void onMouseScroll(SDL_MouseWheelEvent& MEvent);
+
+public:
+	// Mouse position
+	int MouseX, MouseY;
+
+	// How far the mouse has move since last  check/tick
+	int MouseXDelta, MouseYDelta;
+
+	// how far the player has scrolled since the last frame
+	float ScrollDelta;
 
 private:
 
@@ -32,6 +47,6 @@ private:
 	const Uint8* KeyboardState;
 
 	// mouse button current state
-	bool MouseButtonStates[3] = { false };
+	bool MouseButtonStates[10] = { false };
 
 };

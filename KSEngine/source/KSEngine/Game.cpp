@@ -158,6 +158,22 @@ void Game::Update()
     CameraInput *= 1.0f * GetFDeltaTime();
 
     Graphics->EngineDefaultCam += CameraInput;
+
+    //Test  mouse inputs
+    /*if (GameInput->IsMouseButtonDown(MouseButtons::LEFT)) {
+        cout << "Left Mouse button down..." << endl;
+    }
+    else {
+        cout << "Left Mouse button up..." << endl;
+    }
+    
+
+    cout << "x: " << GameInput->MouseX << " - y: " << GameInput->MouseY << endl;
+        
+
+    cout << GameInput->ScrollDelta << endl;*/
+
+
 }
 
 void Game::Draw()

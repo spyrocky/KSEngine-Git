@@ -6,10 +6,18 @@ Input::Input()
 {
     //assign the current keys by default
     KeyboardState = SDL_GetKeyboardState(NULL);
+    MouseXDelta = MouseYDelta = 0;
+    ScrollDelta = 0;
+    MouseX = MouseY = 0;
 }
 
 void Input::ProcessInput()
 {
+
+    // Reset the delta each rrame
+    MouseXDelta = MouseYDelta = 0;
+    ScrollDelta = 0;
+
     //creating event for game loop to close when a key is pressed
     SDL_Event PollEvent;
 
@@ -25,11 +33,12 @@ void Input::ProcessInput()
             SetMouseButtonStates(PollEvent.button.button, false);
             break;
         case SDL_MOUSEMOTION:
-            //SetMouseButtonStates(PollEvent.button.button, true);
+            onMouseMove(PollEvent.motion);
             break;
         case SDL_MOUSEWHEEL:
-            //SetMouseButtonStates(PollEvent.button.button, true);
+            onMouseScroll(PollEvent.wheel);
             break;
+
         case SDL_KEYDOWN:
             //update all the keys on the keyboard with up or down states
             KeyboardState = SDL_GetKeyboardState(NULL);
@@ -58,10 +67,28 @@ bool Input::IsKeyDown(SDL_Scancode Key)
 
 bool Input::IsMouseButtonDown(MouseButtons Button)
 {
-    return false;
+    return  MouseButtonStates[Button];
 }
 
 void Input::SetMouseButtonStates(Uint8 ButtonIndex, bool CurrentState)
 {
     MouseButtonStates[ButtonIndex] = CurrentState;
+}
+
+void Input::onMouseMove(SDL_MouseMotionEvent& MEvent)
+{
+    //the mouse porition
+    MouseX = MEvent.x;
+    MouseY = MEvent.y;
+
+    // movement of the mouse base on the last position
+    // the ralative movement
+    MouseXDelta += MEvent.xrel;
+    MouseYDelta += MEvent.yrel;
+}
+
+void Input::onMouseScroll(SDL_MouseWheelEvent& MEvent)
+{
+    // increase delta relative to how much was scrolled
+    ScrollDelta += MEvent.preciseY;
 }
