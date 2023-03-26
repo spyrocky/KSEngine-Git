@@ -6,17 +6,18 @@ Camera::Camera()
 	
 	UpdateDirectionVectors();
 
-	Transform.Location = Vector3(-2.0f,0.0f,0.0f);
+	//Transform.Location = Vector3(-2.0f,0.0f,0.0f);
 	//Transform.Location -= Directions.Forward * 2.0f;
-	//Transform.Location += -Directions.Forward * 2.0f;
+	Transform.Location += -Directions.Forward * 2.0f;
 
-	UpdateDirectionVectors();
+	//UpdateDirectionVectors();
 
 }
 
 void Camera::Translate(Vector3 Location)
 {
 	Transform.Location = Location;
+
 	UpdateDirectionVectors();
 }
 
@@ -36,10 +37,7 @@ void Camera::UpdateDirectionVectors()
 
 	Directions.Right = glm::normalize(glm::cross(Directions.Forward, Vector3(0.0f,1.0f,0.0f)));
 
-	Directions.Up = glm::normalize(glm::cross(Directions.Right, Directions.Up));
-
-
-
+	Directions.Up = glm::normalize(glm::cross(Directions.Right, Directions.Forward));
 
 }
 
