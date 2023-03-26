@@ -37,6 +37,9 @@ public:
 	//screen and camera coordinates
 	void ApplyScreenTransformations(ShaderPtr Shader);
 
+	//default camera 
+	CameraPtr EngineDefaultCam;
+
 private:
 	//this will hold the window
 	SDL_Window* SdlWindow;
@@ -54,7 +57,5 @@ private:
 	//store all meshes in the game
 	MeshPtrStack MeshStack;
 
-public:
-	//default camera 
-	CameraPtr EngineDefaultCam;
+	
 };

@@ -215,7 +215,7 @@ void GraphicsEngine::ApplyScreenTransformations(ShaderPtr Shader)
 	glm::mat4 projection = glm::mat4(1.0f);
 
 	//update the coordinates for 3D
-	view = glm::translate(view, ViewPosition);
+	view = EngineDefaultCam->GetViewMatrix();
 	//create the perspective view to allow us to see in 3D
 	//also adjusting the near and far clip
 	projection = glm::perspective(glm::radians(FOV), AR, EngineDefaultCam->GetCameraData().NearClip, EngineDefaultCam->GetCameraData().FarClip);

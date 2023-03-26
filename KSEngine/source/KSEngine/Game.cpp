@@ -2,6 +2,7 @@
 #include "KSEngine/Graphics/Mesh.h"
 #include "KSEngine/Graphics/GraphicsEngine.h"
 #include "KSEngine/Input.h"
+#include "KSEngine/Graphics/Camera.h"
 
 Game& Game::GetGameInstance()
 {
@@ -59,26 +60,21 @@ void Game::Run()
             });
 
         //create textures
-        TexturePtr TBlueTiles = Graphics->CreateTexture("Game/Textures/BlueTiles.jpg");
-        TexturePtr TGreenMosaic = Graphics->CreateTexture("Game/Textures/GreenMosaic.jpg");
+        TexturePtr TConcrete = Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
+        TexturePtr TGrid = Graphics->CreateTexture("Game/Textures/ColourGrid.jpg");
 
         //create meshes
-        Poly = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TGreenMosaic });
-        Poly2 = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TBlueTiles });
+        Poly = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TGrid });
+        Poly2 = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TConcrete });
 
-        MeshPtr test = Graphics->CreateSimpleMeshShape(GeometricShapes::Polygon, TextureShader, { TBlueTiles });
-
-        test->Transform.Rotation.y = 60.0f;
+        
 
         //initial transformations for the meshes
-        Poly->Transform.Location.x = 1.0f;
+        
+        Poly->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+        Poly2->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+        
 
-        Poly2->Transform.Location.x = -1.0f;
-        //Tri->Transform.Location.x = -0.5f;
-
-        //Poly->Transform.Rotation.z = 45.0f;
-
-        //Poly->Transform.Scale = Vector3(0.5f);
     }
 
     //as long as the game is not over
@@ -128,38 +124,41 @@ void Game::Update()
     Vector3 CameraInput = Vector3(0.0f);
     Vector3 CameraRotate = Vector3(0.0f);
 
+    CDirection CamDirection = Graphics->EngineDefaultCam->GetDirection();
+
     //move camera foward
     if (GameInput->IsKeyDown(SDL_SCANCODE_W)) {
-        CameraInput.z = 1.0f;
+        CameraInput += CamDirection.Forward;
     }
     //move camera backward
     if (GameInput->IsKeyDown(SDL_SCANCODE_S)) {
-        CameraInput.z = -1.0f;
+        CameraInput += -CamDirection.Forward;
     }
     //move camera left
     if (GameInput->IsKeyDown(SDL_SCANCODE_A)) {
-        CameraInput.x = 1.0f;
+        CameraInput += -CamDirection.Right;
     }
     //move camera right
     if (GameInput->IsKeyDown(SDL_SCANCODE_D)) {
-        CameraInput.x = -1.0f;
+        CameraInput += CamDirection.Right;
     }
     //move camera up
     if (GameInput->IsKeyDown(SDL_SCANCODE_Q)) {
-        CameraInput.y = -1.0f;
+        CameraInput += -CamDirection.Up;
+    }//move camera down
+    if (GameInput->IsKeyDown(SDL_SCANCODE_E)) {
+        CameraInput += CamDirection.Up;
     }
-    //rotate camera left
-    //if (GameInput->IsKeyDown(SDL_SCANCODE_LEFT)) {
-    //    CameraInput.y = 1.0f;
-    //}
-    ////rotate camera right
-    //if (GameInput->IsKeyDown(SDL_SCANCODE_RIGHT))
 
     CameraInput *= 3.0f * GetFDeltaTime();
 
-    Vector3 NewLocation = Graphics->EngineDefaultCam->GetTransforms().Location;
-    //Graphics->EngineDefaultCam += CameraInput;
-    //Graphics->EngineDefaultCam
+    Vector3 NewLocation = Graphics->EngineDefaultCam->GetTransforms().Location += CameraInput;
+    Graphics->EngineDefaultCam->Translate(NewLocation);
+
+    if (GameInput->IsMouseButtonDown(MouseButtons::RIGHT)) {
+        Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta * GetFDeltaTime() * 25.0f);
+        Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta * GetFDeltaTime() * 25.0f);
+    }
     
 
     //Test  mouse inputs
