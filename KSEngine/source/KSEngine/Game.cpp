@@ -125,6 +125,7 @@ void Game::Update()
     Vector3 CameraRotate = Vector3(0.0f);
 
     CDirection CamDirection = Graphics->EngineDefaultCam->GetDirection();
+    STCameraData CamData = Graphics->EngineDefaultCam->GetCameraData();
 
     //move camera foward
     if (GameInput->IsKeyDown(SDL_SCANCODE_W)) {
@@ -149,8 +150,25 @@ void Game::Update()
     if (GameInput->IsKeyDown(SDL_SCANCODE_E)) {
         CameraInput += CamDirection.Up;
     }
+  //Zoom in
+    if (GameInput->IsKeyDown(SDL_SCANCODE_Z)) {
+        CameraInput.x += CamData.FOV * 0.01;
+    }
+
+    //Zoom Out
+    if (GameInput->IsKeyDown(SDL_SCANCODE_C)) {
+        CameraInput.x += -CamData.FOV * 0.01;
+    }
+
+    //Zoom Reset to 70
+    if (GameInput->IsKeyDown(SDL_SCANCODE_X)) {
+        CameraInput.x += CamData.FOV = 70.0f;
+    }
+   
 
     CameraInput *= 3.0f * GetFDeltaTime();
+
+  
 
     Vector3 NewLocation = Graphics->EngineDefaultCam->GetTransforms().Location += CameraInput;
     Graphics->EngineDefaultCam->Translate(NewLocation);
@@ -159,6 +177,8 @@ void Game::Update()
         Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta * GetFDeltaTime() * 25.0f);
         Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta * GetFDeltaTime() * 25.0f);
     }
+
+   
     
 
     //Test  mouse inputs
