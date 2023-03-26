@@ -17,14 +17,20 @@ struct STCameraData {
 class Camera {
 public:
 	Camera();
-	~Camera();
+	
+	// move camera in 3d space to alocation
+	void Translate(Vector3 Location);
+
+	void UpdateDirectionVectors();
 
 	//return the transform data
 	CTransform GetTransforms() const { return Transform; }
 	//return the current facing directions
 	CDirection GetDirection() const { return Direction; }
 
-	//STCameraData 
+	//return the extra camera infor
+	// speed , FOV, near clip, far clip
+	STCameraData GetCameraData() const { return CameraData;  }
 
 private:
 	// trasform of the camenra
@@ -35,5 +41,5 @@ private:
 	CDirection Direction;
 	
 	// hold all the camera effect
-	STCameraData Cameradata;
+	STCameraData CameraData;
 };

@@ -55,6 +55,6 @@ private:
 	MeshPtrStack MeshStack;
 
 public:
-	//default camera position
-	Vector3 EngineDefaultCam;
+	//default camera 
+	CameraPtr EngineDefaultCam;
 };

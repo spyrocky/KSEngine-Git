@@ -155,9 +155,12 @@ void Game::Update()
     ////rotate camera right
     //if (GameInput->IsKeyDown(SDL_SCANCODE_RIGHT))
 
-    CameraInput *= 1.0f * GetFDeltaTime();
+    CameraInput *= 3.0f * GetFDeltaTime();
 
-    Graphics->EngineDefaultCam += CameraInput;
+    Vector3 NewLocation = Graphics->EngineDefaultCam->GetTransforms().Location;
+    //Graphics->EngineDefaultCam += CameraInput;
+    //Graphics->EngineDefaultCam
+    
 
     //Test  mouse inputs
     /*if (GameInput->IsMouseButtonDown(MouseButtons::LEFT)) {
