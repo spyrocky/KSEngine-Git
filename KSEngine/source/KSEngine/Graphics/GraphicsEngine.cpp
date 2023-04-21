@@ -1,12 +1,14 @@
 #include "KSEngine/Graphics/GraphicsEngine.h"
 #include "GL/glew.h"
-#include "KSEngine/Graphics/Mesh.h"
+#include "KSEngine/Graphics/Model.h"
 #include "KSEngine/Graphics/ShaderProgram.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "KSEngine/Graphics/Texture.h"
 #include "KSEngine/Graphics/Camera.h"
 #include "KSEngine/Graphics/Material.h"
+
+using namespace std;
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -19,8 +21,8 @@ GraphicsEngine::GraphicsEngine()
 
 GraphicsEngine::~GraphicsEngine()
 {
-	//clear the mesh stack
-	MeshStack.clear();
+	//clear the model stack
+	ModelStack.clear();
 
 	//clear shader
 	Shader = nullptr;
@@ -130,9 +132,9 @@ void GraphicsEngine::Draw()
 
 	HandleWireframeMode(false);
 
-	//run through each mesh and call its draw method
-	for (MeshPtr LMesh : MeshStack) {
-		LMesh->Draw(DefaultEngineMaterial);
+	//run through each Model and call its draw method
+	for (ModelPtr LModel : ModelStack) {
+		LModel->Draw();
 	}
 
 	PresentGraphics();
@@ -143,20 +145,32 @@ SDL_Window* GraphicsEngine::GetWindow() const
 	return SdlWindow;
 }
 
-MeshPtr GraphicsEngine::CreateSimpleMeshShape(GeometricShapes Shape, ShaderPtr MeshShader, MaterialPtr MeshMaterial)
+ModelPtr GraphicsEngine::CreateSimpleModelShape(GeometricShapes Shape, ShaderPtr MeshShader)
 {
-	//initialize a new mesh class
-	MeshPtr NewMesh = make_shared<Mesh>();
+	//initialize a new model class
+	ModelPtr NewModel = make_shared<Model>();
 
 	//make sure it worked
-	if (!NewMesh->CreateSimpleShape(Shape, MeshShader, 0))
+	if (!NewModel->CreateSimpleMesh(Shape, MeshShader)) {
 		return nullptr;
+	}
 
 	//add mesh into the stack of meshses to be rendered
-	MeshStack.push_back(NewMesh);
+	ModelStack.push_back(NewModel);
 
 	//return the new mesh
-	return NewMesh;
+	return NewModel;
+}
+
+ModelPtr GraphicsEngine::ImportModel(const char* FilePath, ShaderPtr Shader)
+{
+	ModelPtr NewModel = make_shared<Model>();
+
+	if (!NewModel->ImportMeshFromFile(FilePath, Shader)) {
+		return nullptr;
+	}
+
+	return NewModel;
 }
 
 ShaderPtr GraphicsEngine::CreateShader(VFShaderParams ShaderFilePaths)

@@ -26,6 +26,11 @@ class Mesh;
 typedef shared_ptr<Mesh> MeshPtr;
 typedef vector<MeshPtr> MeshPtrStack;
 
+class Model;
+typedef shared_ptr<Model> ModelPtr;
+typedef vector<ModelPtr>ModelPtrStack;
+
+
 class Material;
 typedef shared_ptr<Material> MaterialPtr;
 typedef vector<MaterialPtr> MaterialPtrStack;

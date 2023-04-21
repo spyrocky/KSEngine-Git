@@ -67,8 +67,9 @@ private:
 	Input* GameInput;
 
 	//temporary mesh variables
-	MeshPtr Poly2;
-	MeshPtr Poly;
+	ModelPtr Model2;
+	ModelPtr Model;
 
-
+	ModelPtr Wall2;
+	ModelPtr Wall;
 };

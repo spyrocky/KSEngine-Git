@@ -1,5 +1,5 @@
 #include "KSEngine/Game.h"
-#include "KSEngine/Graphics/Mesh.h"
+#include "KSEngine/Graphics/Model.h"
 #include "KSEngine/Graphics/GraphicsEngine.h"
 #include "KSEngine/Input.h"
 #include "KSEngine/Graphics/Camera.h"
@@ -73,26 +73,25 @@ void Game::Run()
         MGrid->BaseColour.TextureV3 = TGrid;
 
         //create meshes
-        Poly = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, MConcrete);
-        Poly2 = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, MGrid);
+        Model = Graphics->CreateSimpleModelShape(GeometricShapes::Cube, TextureShader);
+        Model2 = Graphics->CreateSimpleModelShape(GeometricShapes::Cube, TextureShader);
 
-        
+        //set material of the model
+        Model->SetMaterialBySlot(0, MConcrete);
+        Model2->SetMaterialBySlot(0, MGrid);
 
-        //initial transformations for the meshes
-        
-        Poly->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
-        Poly2->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+        //initial transformations for the meshes        
+        Model->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+        Model2->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
 
         //import custom meshes
         Wall = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_Wall_Damaged_2x1_A.obj", TextureShader);
 
         if (Wall != nullptr) {
+            //transform the wall
             Wall->Transform.Scale = Vector3(0.05f);
             Wall->Transform.Rotation.y = 90.0f;
-            Wall->Transform.Location = Vector3(2.0f, -2.0f, 0.0f);
-
-            //transform the wall
-
+            Wall->Transform.Location = Vector3(2.0f, -2.0f, 0.0f); 
 
             //create the texture
             TexturePtr TWall = Graphics->CreateTexture("Game/Models/damaged-wall/textures/T_Wall_Damaged_2x1_A_BC.png");
@@ -144,13 +143,13 @@ void Game::Update()
 
 
     //TODO:Handle Logic
-    Poly->Transform.Rotation.z += 50.0f * GetFDeltaTime();
-    Poly->Transform.Rotation.x += 50.0f * GetFDeltaTime();
-    Poly->Transform.Rotation.y += 50.0f * GetFDeltaTime();
+    Model->Transform.Rotation.z += 50.0f * GetFDeltaTime();
+    Model->Transform.Rotation.x += 50.0f * GetFDeltaTime();
+    Model->Transform.Rotation.y += 50.0f * GetFDeltaTime();
 
-    Poly2->Transform.Rotation.z -= 50.0f * GetFDeltaTime();
-    Poly2->Transform.Rotation.x -= 50.0f * GetFDeltaTime();
-    Poly2->Transform.Rotation.y -= 50.0f * GetFDeltaTime();
+    Model2->Transform.Rotation.z -= 50.0f * GetFDeltaTime();
+    Model2->Transform.Rotation.x -= 50.0f * GetFDeltaTime();
+    Model2->Transform.Rotation.y -= 50.0f * GetFDeltaTime();
 
     Vector3 CameraInput = Vector3(0.0f);
     Vector3 CameraRotate = Vector3(0.0f);

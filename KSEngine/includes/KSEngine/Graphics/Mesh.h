@@ -3,6 +3,8 @@
 #include "KSEngine/Math/Transformations.h"
 
 
+struct Vertex;
+
 class Mesh {
 public:
 	Mesh();
@@ -18,6 +20,9 @@ public:
 	CTransform Transform;
 	//return material slot by the model to the mesh
 	UNint GetMaterialSlot() const { return MaterialSlot; }
+
+	//create a mesh VAO that predefine model
+	bool CreatMesh(vector<Vertex> Verticies, vector<UNint> Indicies, ShaderPtr MeshShader, UNint MaterialSlot);
 
 private:
 	//Store the shader this mesh requires

@@ -89,3 +89,26 @@ void Mesh::Draw(MaterialPtr MeshMaterial)
 	//draw the VAO
 	MeshVAO->Draw();
 }
+
+bool Mesh::CreatMesh(vector<Vertex> Verticies, vector<UNint> Indicies, ShaderPtr MeshShader, UNint MaterialSlot)
+{
+	cout << "Creating Mesh." << endl;
+
+	//Create the VAO
+	MeshVAO = make_shared<VAO>(Verticies, Indicies);
+
+	//validate the mesh was created
+	if (MeshVAO == nullptr) {
+		cout << "Mesh | Failed to create Mesh." << endl;
+		return false;
+	}
+
+	//assign the shader and textures
+	this->MeshShader = MeshShader;
+	this->MaterialSlot = MaterialSlot;
+
+
+	cout << "Mesh | Mesh created successfully." << endl;
+
+	return false;
+}
