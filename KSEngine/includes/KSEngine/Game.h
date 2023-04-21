@@ -25,6 +25,10 @@ public:
 	GraphicsEnginePtr GetGraphics() { return Graphics; }
 	//set bIsGameOver to true
 	void CloseApp() { bIsGameOver = true; }
+
+	// return the graphic engine default texture
+	TexturePtr GetDefaultGEngineTexture();
+
 private:
 	Game();
 	~Game();
@@ -45,6 +49,8 @@ private:
 	//handle anything that needs to be deleted when the game ends
 	void CloseGame();
 
+
+
 private:
 	//boolean that ends the game
 	bool bIsGameOver;
@@ -61,4 +67,6 @@ private:
 	//temporary mesh variables
 	MeshPtr Poly2;
 	MeshPtr Poly;
+
+
 };

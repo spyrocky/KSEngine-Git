@@ -20,6 +20,10 @@ public:
 	void SetMat4(const char* ShaderVariable, glm::mat4 Value);
 	//allow changing integer values in shader code
 	void SetInt(const char* ShaderVarName, int Value);
+	//change float
+	void SetFloat(const char* ShaderVarName, float Value);
+	//change vector
+	void SetVector3(const char* ShaderVarName, glm::vec3 Value);
 
 private:
 	//attach the shader to VAO

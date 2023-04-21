@@ -3,6 +3,7 @@
 #include "KSEngine/Graphics/GraphicsEngine.h"
 #include "KSEngine/Input.h"
 #include "KSEngine/Graphics/Camera.h"
+#include "KSEngine/Graphics/Material.h"
 
 Game& Game::GetGameInstance()
 {
@@ -63,9 +64,17 @@ void Game::Run()
         TexturePtr TConcrete = Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
         TexturePtr TGrid = Graphics->CreateTexture("Game/Textures/ColourGrid.jpg");
 
+        // create the materials
+        MaterialPtr MConcrete = make_shared<Material>();
+        MaterialPtr MGrid = make_shared<Material>();
+
+        //Assign base coloe using the texture
+        MConcrete->BaseColour.TextureV3 = TConcrete;
+        MGrid->BaseColour.TextureV3 = TGrid;
+
         //create meshes
-        Poly = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TGrid });
-        Poly2 = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, { TConcrete });
+        Poly = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, MConcrete);
+        Poly2 = Graphics->CreateSimpleMeshShape(GeometricShapes::Cube, TextureShader, MGrid);
 
         
 
@@ -73,6 +82,28 @@ void Game::Run()
         
         Poly->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
         Poly2->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+
+        //import custom meshes
+        Wall = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_Wall_Damaged.obj", TextureShader);
+
+        if (Wall != nullptr) {
+            Wall->Transform.Scale = Vector3(0.05f);
+            Wall->Transform.Rotation.y = 90.0f;
+            Wall->Transform.Location = Vector3(2.0f, -2.0f, 0.0f);
+
+            //transform the wall
+
+
+            //create the texture
+            TexturePtr TWall = Graphics->CreateTexture("Game/Models/damaged-wall/textures/Wall_Damaged_BC.png");
+
+            //create a material
+            MaterialPtr MWall = make_shared<Material>();
+            MWall->BaseColour.TextureV3 = TWall;
+
+            //apply the material
+            Wall->SetMaterialBySlot(1, MWall);
+        }
         
 
     }
@@ -175,31 +206,25 @@ void Game::Update()
 
   
 
-    Vector3 NewLocation = Graphics->EngineDefaultCam->GetTransforms().Location += CameraInput;
+    /*Vector3 NewLocation = Graphics->EngineDefaultCam->GetTransforms().Location += CameraInput;
     Graphics->EngineDefaultCam->Translate(NewLocation);
 
     if (GameInput->IsMouseButtonDown(MouseButtons::RIGHT)) {
         Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta * GetFDeltaTime() * 25.0f);
         Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta * GetFDeltaTime() * 25.0f);
-    }
+    }*/
 
-   
-    
+    //move the camera based on input
+    Graphics->EngineDefaultCam->AddMovementInput(CameraInput);
 
-    //Test  mouse inputs
-    /*if (GameInput->IsMouseButtonDown(MouseButtons::LEFT)) {
-        cout << "Left Mouse button down..." << endl;
+    if (GameInput->IsMouseButtonDown(MouseButtons::RIGHT)) {
+        Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta * GetFDeltaTime());
+        Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta * GetFDeltaTime());
+        GameInput->ShowCursor(false);
     }
     else {
-        cout << "Left Mouse button up..." << endl;
+        GameInput->ShowCursor(true);
     }
-    
-
-    cout << "x: " << GameInput->MouseX << " - y: " << GameInput->MouseY << endl;
-        
-
-    cout << GameInput->ScrollDelta << endl;*/
-
 
 }
 
@@ -211,4 +236,9 @@ void Game::Draw()
 void Game::CloseGame()
 {
     delete GameInput;
+}
+
+TexturePtr Game::GetDefaultGEngineTexture()
+{
+    return Graphics->DefaultEngineTexture;
 }

@@ -137,6 +137,7 @@
     <ClInclude Include="includes\KSEngine\Game.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Camera.h" />
     <ClInclude Include="includes\KSEngine\Graphics\GraphicsEngine.h" />
+    <ClInclude Include="includes\KSEngine\Graphics\Material.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Mesh.h" />
     <ClInclude Include="includes\KSEngine\Graphics\ShaderProgram.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Texture.h" />
@@ -150,6 +151,7 @@
     <ClCompile Include="source\KSEngine\Game.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Camera.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\GraphicsEngine.cpp" />
+    <ClCompile Include="source\KSEngine\Graphics\Material.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Mesh.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\ShaderProgram.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Texture.cpp" />
@@ -162,6 +164,9 @@
     <None Include="Game\Shaders\TextureShader\TextureShader.svert" />
     <None Include="Game\Shaders\VertexShader\VertexShader.sfrag" />
     <None Include="Game\Shaders\VertexShader\VertexShader.svert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\New folder\Wall_Damaged_BC.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

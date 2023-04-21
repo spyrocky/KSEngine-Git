@@ -98,6 +98,9 @@ bool GraphicsEngine::InitGE(const char* WTitle, bool bFullscreen, int WWidth, in
 	//enable 3D depth
 	glEnable(GL_DEPTH_TEST);
 
+	// Create Default Engine texture
+	DefaultEngineTexture = CreateTexture("Game/Textures/DefaultTexture.png");
+
 	return true;
 }
 
@@ -135,13 +138,13 @@ SDL_Window* GraphicsEngine::GetWindow() const
 	return SdlWindow;
 }
 
-MeshPtr GraphicsEngine::CreateSimpleMeshShape(GeometricShapes Shape, ShaderPtr MeshShader, TexturePtrStack MeshTextures)
+MeshPtr GraphicsEngine::CreateSimpleMeshShape(GeometricShapes Shape, ShaderPtr MeshShader, MaterialPtr MeshMaterial)
 {
 	//initialize a new mesh class
 	MeshPtr NewMesh = make_shared<Mesh>();
 
 	//make sure it worked
-	if (!NewMesh->CreateSimpleShape(Shape, MeshShader, MeshTextures))
+	if (!NewMesh->CreateSimpleShape(Shape, MeshShader, MeshMaterial))
 		return nullptr;
 
 	//add mesh into the stack of meshses to be rendered
