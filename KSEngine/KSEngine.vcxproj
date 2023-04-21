@@ -136,6 +136,7 @@
     <ClInclude Include="includes\KSEngine\CoreMinimal.h" />
     <ClInclude Include="includes\KSEngine\Game.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Camera.h" />
+    <ClInclude Include="includes\KSEngine\Graphics\Collosion.h" />
     <ClInclude Include="includes\KSEngine\Graphics\GraphicsEngine.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Material.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Mesh.h" />
@@ -150,8 +151,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\Source.cpp" />
+    <ClCompile Include="includes\KSEngine\Graphics\Collosion.cpp" />
     <ClCompile Include="source\KSEngine\Game.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Camera.cpp" />
+    <ClCompile Include="source\KSEngine\Graphics\Collision.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\GraphicsEngine.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Material.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Mesh.cpp" />
