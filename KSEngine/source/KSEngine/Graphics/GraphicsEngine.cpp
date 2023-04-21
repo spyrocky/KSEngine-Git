@@ -6,6 +6,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "KSEngine/Graphics/Texture.h"
 #include "KSEngine/Graphics/Camera.h"
+#include "KSEngine/Graphics/Material.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -101,6 +102,10 @@ bool GraphicsEngine::InitGE(const char* WTitle, bool bFullscreen, int WWidth, in
 	// Create Default Engine texture
 	DefaultEngineTexture = CreateTexture("Game/Textures/DefaultTexture.png");
 
+	//create Default engine material
+	//add material when create auto assign the default texture
+	DefaultEngineMaterial = make_shared<Material>();
+
 	return true;
 }
 
@@ -127,7 +132,7 @@ void GraphicsEngine::Draw()
 
 	//run through each mesh and call its draw method
 	for (MeshPtr LMesh : MeshStack) {
-		LMesh->Draw();
+		LMesh->Draw(DefaultEngineMaterial);
 	}
 
 	PresentGraphics();
@@ -144,7 +149,7 @@ MeshPtr GraphicsEngine::CreateSimpleMeshShape(GeometricShapes Shape, ShaderPtr M
 	MeshPtr NewMesh = make_shared<Mesh>();
 
 	//make sure it worked
-	if (!NewMesh->CreateSimpleShape(Shape, MeshShader, MeshMaterial))
+	if (!NewMesh->CreateSimpleShape(Shape, MeshShader, 0))
 		return nullptr;
 
 	//add mesh into the stack of meshses to be rendered

@@ -139,6 +139,7 @@
     <ClInclude Include="includes\KSEngine\Graphics\GraphicsEngine.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Material.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Mesh.h" />
+    <ClInclude Include="includes\KSEngine\Graphics\Model.h" />
     <ClInclude Include="includes\KSEngine\Graphics\ShaderProgram.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Texture.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Vertex.h" />
@@ -154,6 +155,7 @@
     <ClCompile Include="source\KSEngine\Graphics\GraphicsEngine.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Material.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Mesh.cpp" />
+    <ClCompile Include="source\KSEngine\Graphics\Model.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\ShaderProgram.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Texture.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\VertexArrayObject.cpp" />

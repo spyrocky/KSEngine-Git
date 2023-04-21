@@ -43,6 +43,8 @@ public:
 	// Default Texture
 	TexturePtr DefaultEngineTexture;
 
+	MaterialPtr DefaultEngineMaterial;
+
 
 private:
 	//this will hold the window

@@ -9,10 +9,10 @@ public:
 	~Mesh();
 
 	//Create the mesh out of VAO, a shader and textures
-	bool CreateSimpleShape(GeometricShapes Shape, ShaderPtr MeshShader, MaterialPtr MeshMaterial);
+	bool CreateSimpleShape(GeometricShapes Shape, ShaderPtr MeshShader, UNint MaterialSlot);
 
 	//handle the drawing of all the required classes
-	void Draw();
+	void Draw(MaterialPtr MeshMaterial);
 
 	//this holds the position, rotation and scale of the mesh
 	CTransform Transform;
@@ -22,7 +22,8 @@ private:
 	ShaderPtr MeshShader;
 
 	//Assign material to the mesh
-	MaterialPtr MeshMaterial;
+	//MaterialPtr MeshMaterial;
+	UNint MaterialSlot;
 
 
 	//Create a new VAO for the mesh

@@ -20,13 +20,13 @@ Mesh::~Mesh()
 {
 	MeshShader = nullptr;
 	//MeshTextures.clear();
-	MeshMaterial = nullptr;
+	//MeshMaterial = nullptr;
 	MeshVAO = nullptr;
 
 	cout << "Mesh | Mesh Destroyed." << endl;
 }
 
-bool Mesh::CreateSimpleShape(GeometricShapes Shape, ShaderPtr MeshShader, MaterialPtr MeshMaterial)
+bool Mesh::CreateSimpleShape(GeometricShapes Shape, ShaderPtr MeshShader, UNint MaterialSlot)
 {
 	cout << "Creating Mesh." << endl;
 
@@ -41,7 +41,7 @@ bool Mesh::CreateSimpleShape(GeometricShapes Shape, ShaderPtr MeshShader, Materi
 
 	//assign the shader and textures
 	this->MeshShader = MeshShader;
-	this->MeshMaterial = MeshMaterial;
+	this->MaterialSlot = MaterialSlot;
 
 
 	cout << "Mesh | Mesh created successfully." << endl;
@@ -49,7 +49,7 @@ bool Mesh::CreateSimpleShape(GeometricShapes Shape, ShaderPtr MeshShader, Materi
 	return true;
 }
 
-void Mesh::Draw()
+void Mesh::Draw(MaterialPtr MeshMaterial)
 {
 	//Activate the shader that this mesh uses
 	MeshShader->RunShader();
