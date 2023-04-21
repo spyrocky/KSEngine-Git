@@ -152,17 +152,22 @@ void Game::Update()
     }
   //Zoom in
     if (GameInput->IsKeyDown(SDL_SCANCODE_Z)) {
-        CameraInput.x += CamData.FOV * 0.01;
+        CameraInput.x += CamData.FOV * 0.01f;
+
+        cout << "FOV in: " << CameraInput.x << endl;
     }
 
     //Zoom Out
     if (GameInput->IsKeyDown(SDL_SCANCODE_C)) {
-        CameraInput.x += -CamData.FOV * 0.01;
+        CameraInput.x += -CamData.FOV * 0.01f;
+        cout << "FOV out: " << CameraInput.x << endl;
     }
 
     //Zoom Reset to 70
     if (GameInput->IsKeyDown(SDL_SCANCODE_X)) {
-        CameraInput.x += CamData.FOV = 70.0f;
+        CameraInput += CamData.FOV;
+
+        cout << "FOV reset: " << CameraInput.x << endl;
     }
    
 
