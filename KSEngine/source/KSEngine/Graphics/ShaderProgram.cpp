@@ -62,6 +62,20 @@ void ShaderProgram::SetInt(const char* ShaderVarName, int Value)
 
 }
 
+void ShaderProgram::SetFloat(const char* ShaderVarName, float Value)
+{
+	glUniform1i(
+		glGetUniformLocation(ProgramID, ShaderVarName), Value
+	);
+}
+
+void ShaderProgram::SetVector3(const char* ShaderVarName, glm::vec3 Value)
+{
+	glUniform3fv(
+		glGetUniformLocation(ProgramID, ShaderVarName), 1, value_ptr(Value)
+	);
+}
+
 bool ShaderProgram::AttachShader(const wchar_t* ShaderFilePath, ShaderTypes Type)
 {
 	//store the shader code

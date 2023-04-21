@@ -72,17 +72,21 @@ void Game::Run()
         MConcrete->BaseColour.TextureV3 = TConcrete;
         MGrid->BaseColour.TextureV3 = TGrid;
 
-        //create meshes
-        Model = Graphics->CreateSimpleModelShape(GeometricShapes::Cube, TextureShader);
-        Model2 = Graphics->CreateSimpleModelShape(GeometricShapes::Cube, TextureShader);
-
+        //create meshes / 3 Primitives
+        Model = Graphics->ImportModel("Game/Models/Primitives/Cube.fbx", TextureShader);
+        Model2 = Graphics->ImportModel("Game/Models/Primitives/Sphere.fbx", TextureShader);
+       // Model3 = Graphics->ImportModel("Game/Models/Primitives/Plane.fbx", TextureShader);
         //set material of the model
         Model->SetMaterialBySlot(0, MConcrete);
         Model2->SetMaterialBySlot(0, MGrid);
+       // Model3->SetMaterialBySlot(0, MConcrete);
+
+        Model2->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(10.0f, 0.0f,0.0f);
 
         //initial transformations for the meshes        
-        Model->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
-        Model2->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+        Model->Transform.Location = Vector3(0.0f, 0.0f, 1.0f);
+        Model2->Transform.Location = Vector3(0.0f, 0.0f, -1.0f);
+       // Model3->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
 
         //import custom meshes
         Wall = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_Wall_Damaged_2x1_A.obj", TextureShader);
@@ -180,7 +184,8 @@ void Game::Update()
     if (GameInput->IsKeyDown(SDL_SCANCODE_E)) {
         CameraInput += CamDirection.Up;
     }
-  //Zoom in
+  
+    //Zoom in
     if (GameInput->IsKeyDown(SDL_SCANCODE_Z)) {
         CameraInput.x += CamData.FOV * 0.01f;
 
@@ -198,14 +203,14 @@ void Game::Update()
         CameraInput += CamData.FOV;
 
         cout << "FOV reset: " << CameraInput.x << endl;
-    }
+    } 
    
 
     CameraInput *= 3.0f * GetFDeltaTime();
 
   
 
-    /*Vector3 NewLocation = Graphics->EngineDefaultCam->GetTransforms().Location += CameraInput;
+   /* Vector3 NewLocation = Graphics->EngineDefaultCam->GetTransforms().Location += CameraInput;
     Graphics->EngineDefaultCam->Translate(NewLocation);
 
     if (GameInput->IsMouseButtonDown(MouseButtons::RIGHT)) {
@@ -224,6 +229,7 @@ void Game::Update()
     else {
         GameInput->ShowCursor(true);
     }
+    
 
 }
 

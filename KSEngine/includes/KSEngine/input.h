@@ -21,6 +21,9 @@ public:
 	//detect if the mouse button inputs is being pressed down
 	bool IsMouseButtonDown(MouseButtons Button);
 
+	//change the visibility of the cursor 
+	void ShowCursor(bool bVisibility);
+
 private:
 	//update the mouse button state with the current state mouse
 	void SetMouseButtonStates(Uint8 ButtonIndex, bool CurrentState);

@@ -1,5 +1,6 @@
 #include "KSEngine/Graphics/Camera.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "KSEngine/Game.h"
 
 Camera::Camera()
 {
@@ -39,6 +40,29 @@ void Camera::UpdateDirectionVectors()
 
 	Directions.Up = glm::normalize(glm::cross(Directions.Right, Directions.Forward));
 
+}
+
+void Camera::AddMovementInput(Vector3 Direction)
+{
+	//ignore the rest of the function if no direction is given
+	if (glm::length(Direction) == 0)
+		return;
+
+	//divide the vector by its length
+	//dont normalize if the direction is 0
+	Direction = glm::normalize(Direction);
+
+	//set the velocity of the camera using speed and input direction
+	Vector3 Vel = Direction * (CameraData.Speed * Game::GetGameInstance().GetFDeltaTime());
+
+	//create a new location from the camera based on its position and the current velocity
+	Vector3 NewPosition = Transform.Location + Vel;
+
+	//make sure the camera has actually been told to move
+	if (Transform.Location != NewPosition) {
+		//move camera to the new position
+		Translate(NewPosition);
+	}
 }
 
 glm::mat4 Camera::GetViewMatrix() const

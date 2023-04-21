@@ -24,10 +24,13 @@ public:
 	//Find the current direction vectors based on the rotation of YAW and PITCH of the camera
 	void UpdateDirectionVectors();
 
+	void AddMovementInput(Vector3 Direction);
+
 	//return the transform data
 	CTransform GetTransforms() const { return Transform; }
 	//return the current facing directions
 	CDirection GetDirection() const { return Directions; }
+
 
 	//return the extra camera infor
 	// speed , FOV, near clip, far clip
