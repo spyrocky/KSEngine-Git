@@ -110,7 +110,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)KSEngine\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;opengl32.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)KSEngine\lib\*.dll" "$(SolutionDir)$(Platform)\$(Configuration)"</Command>
@@ -141,6 +141,7 @@
     <ClInclude Include="includes\KSEngine\Graphics\Mesh.h" />
     <ClInclude Include="includes\KSEngine\Graphics\ShaderProgram.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Texture.h" />
+    <ClInclude Include="includes\KSEngine\Graphics\Vertex.h" />
     <ClInclude Include="includes\KSEngine\Graphics\VertexArrayObject.h" />
     <ClInclude Include="includes\KSEngine\input.h" />
     <ClInclude Include="includes\KSEngine\Math\Transformations.h" />

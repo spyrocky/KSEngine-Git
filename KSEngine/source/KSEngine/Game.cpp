@@ -84,7 +84,7 @@ void Game::Run()
         Poly2->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
 
         //import custom meshes
-        Wall = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_Wall_Damaged.obj", TextureShader);
+        Wall = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_Wall_Damaged_2x1_A.obj", TextureShader);
 
         if (Wall != nullptr) {
             Wall->Transform.Scale = Vector3(0.05f);
@@ -95,7 +95,7 @@ void Game::Run()
 
 
             //create the texture
-            TexturePtr TWall = Graphics->CreateTexture("Game/Models/damaged-wall/textures/Wall_Damaged_BC.png");
+            TexturePtr TWall = Graphics->CreateTexture("Game/Models/damaged-wall/textures/T_Wall_Damaged_2x1_A_BC.png");
 
             //create a material
             MaterialPtr MWall = make_shared<Material>();

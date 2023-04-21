@@ -1,6 +1,7 @@
 #pragma once
 
 #include "KSEngine/CoreMinimal.h"
+#include "Vertex.h"
 
 const PositionMatrix TrianglePositions{
 	//x		//y		//z		//Colour			//tex coordss
@@ -96,6 +97,9 @@ const IndicesMatrix CubeIndicies{
 class VertexArrayObject {
 public:
 	VertexArrayObject(GeometricShapes ChosenShape);
+
+	VertexArrayObject(vector<Vertex> Verticies, vector<UNint> Indicies);
+
 	~VertexArrayObject();
 
 	void Draw();
@@ -108,4 +112,7 @@ private:
 	//VAB - ID for vertices
 	//EAB - ID for indices
 	UNint ID, VAB, EAB;
+
+	vector<Vertex> Verticies;
+	vector<UNint> Indicies;
 };
