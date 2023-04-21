@@ -16,6 +16,8 @@ public:
 
 	//this holds the position, rotation and scale of the mesh
 	CTransform Transform;
+	//return material slot by the model to the mesh
+	UNint GetMaterialSlot() const { return MaterialSlot; }
 
 private:
 	//Store the shader this mesh requires

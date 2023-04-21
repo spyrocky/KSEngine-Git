@@ -29,6 +29,8 @@ public:
 	// return the graphic engine default texture
 	TexturePtr GetDefaultGEngineTexture();
 
+	MaterialPtr GetDefaultGEngineMaterial();
+
 private:
 	Game();
 	~Game();

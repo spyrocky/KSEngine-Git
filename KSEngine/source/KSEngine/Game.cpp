@@ -242,3 +242,9 @@ TexturePtr Game::GetDefaultGEngineTexture()
 {
     return Graphics->DefaultEngineTexture;
 }
+
+MaterialPtr Game::GetDefaultGEngineMaterial()
+{
+    
+    return Graphics->DefaultEngineMaterial;
+}
