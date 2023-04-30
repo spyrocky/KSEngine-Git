@@ -72,15 +72,19 @@ void Game::Run()
 
         
         //import obj custom mesh to game (obstacles)
+        // "Game/Models/Primitives/Cube.fbx" // test 3d model
+
         Tree = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
         Tree2 = Graphics->ImportModel("Game/Models/Tree/tree-round.obj", TextureShader);
         Tree3 = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
         Tree4 = Graphics->ImportModel("Game/Models/Tree/tree-round.obj", TextureShader);
-        Tree5 = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
+        Tree5 = Graphics->ImportModel("Game/Models/Tree/tree-round.obj", TextureShader);
 
 
         // items collectable
-        Coin = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);  
+        // "Game/Models/Primitives/Sphere.fbx" // Test 3d model
+
+        Coin = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
         Coin2 = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
         Coin3 = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
 
@@ -88,33 +92,33 @@ void Game::Run()
 
 
         //Transform all
-        Tree->Transform.Scale = Vector3(0.2f);      
-        Tree->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+        Tree->Transform.Scale = Vector3(1.0f);      
+        Tree->Transform.Location = Vector3(2.0f, 0.0f, 1.0f);
 
-        Tree2->Transform.Scale = Vector3(0.2f);
-        Tree2->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+        Tree2->Transform.Scale = Vector3(3.0f);
+        Tree2->Transform.Location = Vector3(10.0f, 0.0f, -1.0f);
 
-        Tree3->Transform.Scale = Vector3(0.2f);
-        Tree3->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+        Tree3->Transform.Scale = Vector3(1.0f);
+        Tree3->Transform.Location = Vector3(20.0f, 0.0f, 3.0f);
 
-        Tree4->Transform.Scale = Vector3(0.2f);
-        Tree4->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+        Tree4->Transform.Scale = Vector3(2.0f);
+        Tree4->Transform.Location = Vector3(30.0f, 0.0f, 2.0f);
 
-        Tree5->Transform.Scale = Vector3(0.2f);
-        Tree5->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+        Tree5->Transform.Scale = Vector3(3.0f);
+        Tree5->Transform.Location = Vector3(40.0f, 0.0f, -1.0f);
 
 
-        Coin->Transform.Scale = Vector3(0.2f);
+        Coin->Transform.Scale = Vector3(1.0f);
         Coin->Transform.Rotation.y = 90.0f;
-        Coin->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);  
+        Coin->Transform.Location = Vector3(5.0f, 3.0f, 0.0f);  
 
-        Coin2->Transform.Scale = Vector3(0.2f);
+        Coin2->Transform.Scale = Vector3(1.0f);
         Coin2->Transform.Rotation.y = 90.0f;
-        Coin2->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+        Coin2->Transform.Location = Vector3(25.0f, 0.0f, -1.0f);
 
-        Coin3->Transform.Scale = Vector3(0.2f);
+        Coin3->Transform.Scale = Vector3(1.0f);
         Coin3->Transform.Rotation.y = 90.0f;
-        Coin3->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+        Coin3->Transform.Location = Vector3(35.0f, 1.0f, 1.0f);
        
 
         //create texture
@@ -246,17 +250,17 @@ void Game::Update()
 
     
     //Rotate collectable item such as coin
-    if (Coin != nullptr) {
+   /* if (Coin != nullptr) {
         Coin->Transform.Rotation.y += 50.0f * GetFDeltaTime(); //rotate coin
     }
 
     if (Coin2 != nullptr) {
-        Coin->Transform.Rotation.y += 50.0f * GetFDeltaTime(); //rotate coin
+      Coin->Transform.Rotation.y += 50.0f * GetFDeltaTime(); //rotate coin
     }
 
     if (Coin3 != nullptr) {
         Coin->Transform.Rotation.y += 50.0f * GetFDeltaTime(); //rotate coin
-    }
+    }*/
     
         
     Graphics->EngineDefaultCam->Update();
@@ -273,11 +277,13 @@ void Game::Update()
         RemoveModelFromGame(Coin);
     }
 
-    if (Coin2 != nullptr && CamCol->IsOverlapping(*Coin2->GetCollision()))
+    if (Coin2 != nullptr && CamCol->IsOverlapping(*Coin2->GetCollision())) {
         RemoveModelFromGame(Coin2);
+    }
 
-    if (Coin3 != nullptr && CamCol->IsOverlapping(*Coin3->GetCollision()))
+    if (Coin3 != nullptr && CamCol->IsOverlapping(*Coin3->GetCollision())) {
         RemoveModelFromGame(Coin3);
+    }
     
 
 }
@@ -310,23 +316,23 @@ void Game::Draw()
         CamCol->DebugDraw(Vector3(0.0f, 255.0f, 0.0f));
     }
     else {
-        CamCol->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
+        //CamCol->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
     }
 
     if (Coin2 != nullptr && CamCol->IsOverlapping(*Coin2->GetCollision())) {
         CamCol->DebugDraw(Vector3(0.0f, 255.0f, 0.0f));
     }
     else {
-        CamCol->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
+       // CamCol->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
     }
 
     if (Coin3 != nullptr && CamCol->IsOverlapping(*Coin3->GetCollision())) {
         CamCol->DebugDraw(Vector3(0.0f, 255.0f, 0.0f));
     }
     else {
-        CamCol->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
+        //CamCol->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
     }
-
+    
 
     Graphics->PresentGraphics();
 }

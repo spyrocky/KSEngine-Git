@@ -43,13 +43,17 @@ bool Model::CreateSimpleMesh(GeometricShapes Shape, ShaderPtr ModelShader)
 bool Model::ImportMeshFromFile(const char* ImportFilePath, ShaderPtr ModelShader)
 {
 	
+	cout << "Attempting to import model" << endl;
 
 	//create and import using assimp
 	Assimp::Importer Importer;
 	//attemp to import the new mesh base on the file path using the importer
 	const aiScene* Scene = Importer.ReadFile(ImportFilePath, aiProcess_Triangulate);
 
-	//check if the file import correctly
+	//check if the file imported correctly
+	//!Scene means the file path probably didn't work
+	//AI_SCENE_FLAGS_INCOOMPLETE means the file is probably corrupted or cannot be read by ASSIMP
+	//!Scene->mRootNode means it's also either corrupted or not supported by ASSIMP
 	if (!Scene || Scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !Scene->mRootNode) {
 		cout << "Model | Error importing model from " << ImportFilePath << " - " << Importer.GetErrorString() << endl;
 		return false;
@@ -67,29 +71,30 @@ bool Model::ImportMeshFromFile(const char* ImportFilePath, ShaderPtr ModelShader
 	for (UNint i=0; i<MaterialStack.size(); i++)
 	{
 		MaterialStack[i] = Game::GetGameInstance().GetDefaultGEngineMaterial();
+		cout << "Assign gray" << endl;
 	}
 
+	cout << MaterialStack.size() << endl;
 
 	return true;
 }
 
 void Model::Draw()
 {
-	
-
-	//cycle through the mesh and draw each one
-	for (MeshPtr LMesh : MeshStack) {
-		//assign the model thransformation to the mesh
-		LMesh->Transform = this->Transform;
-		// draw the mesh using the material slot it has been assign 
-		LMesh->Draw(MaterialStack[LMesh->GetMaterialSlot()]);
-	}
-
-	if (ModelCollision != nullptr) {
-		//ModelCollision->DebugDraw(Vector3(255.0f));
+	if (ModelCollision != nullptr)
+	{
+		ModelCollision->DebugDraw(Vector3(255.0f));
 		ModelCollision->SetLocation(Transform.Location);
 	}
+	//cycle through the meshes and draw each one
+	for (MeshPtr LMesh : MeshStack)
+	{
+		//assign the model transformations to the mesh
+		LMesh->Transform = this->Transform;
 
+		//draw the mesh using the material slot it has been assign
+		LMesh->Draw(MaterialStack[LMesh->GetMaterialSlot()]);
+	}
 }
 
 void Model::SetMaterialBySlot(UNint SlotIndex, MaterialPtr NewMaterial)
@@ -135,6 +140,7 @@ void Model::FindAndImportSceneMeshes(aiNode* Node, const aiScene* Scene)
 		// add the new convert mesh into our mesh array
 		if (ConvertedMesh != nullptr) {
 			MeshStack.push_back(ConvertedMesh);
+			cout << "Found and converted Mesh" << endl;
 		}
 	}
 

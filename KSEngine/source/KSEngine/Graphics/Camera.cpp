@@ -27,20 +27,29 @@ void Camera::Translate(Vector3 Location)
 
 void Camera::UpdateDirectionVectors()
 {
-	Vector3 ForwardDirection{};
+	//create a vector 3 top initialise a 0 direction
+	Vector3 ForwardDirection;
 
-	ForwardDirection.x = cos(glm::radians(Transform.Rotation.y)) * cos(glm::radians(Transform.Rotation.x));
-
+	//cosine of the Yaw * cosine of the Pitch
+	ForwardDirection.x = cos(glm::radians(Transform.Rotation.y)) *
+		cos(glm::radians(Transform.Rotation.x));
+	//sin of the pitch
 	ForwardDirection.y = sin(glm::radians(Transform.Rotation.x));
+	//sin of the Yaw and the cosine of the Pitch
+	ForwardDirection.z = sin(glm::radians(Transform.Rotation.y)) *
+		cos(glm::radians(Transform.Rotation.x));
 
-	ForwardDirection.z = sin(glm::radians(Transform.Rotation.y)) * cos(glm::radians(Transform.Rotation.x));
-
+	//normalise the direction to update the values to be between 0 and 1
 	ForwardDirection = glm::normalize(ForwardDirection);
 
+	//set the forward direction
 	Directions.Forward = ForwardDirection;
 
-	Directions.Right = glm::normalize(glm::cross(Directions.Forward, Vector3(0.0f,1.0f,0.0f)));
-
+	//cross product - will allow us to get our right and up vectors from the forward vector
+	//cross product is the axis that is perpendicular to two other axis
+	//set the right direction to always be perpendicular to the world up
+	Directions.Right = glm::normalize(glm::cross(Directions.Forward, Vector3(0.0f, 1.0f, 0.0f)));
+	//up direction is based on the local rotation of the forward and right directions
 	Directions.Up = glm::normalize(glm::cross(Directions.Right, Directions.Forward));
 
 }
@@ -79,8 +88,7 @@ glm::mat4 Camera::GetViewMatrix() const
 
 void Camera::RotatePitch(float Amount)
 {
-	//rotating -89 or +89 will result in yaw flip and flip the cam
-	Transform.Rotation.x += Amount;
+	Transform.Rotation.x += Amount * CameraData.LookSensetivity;
 
 	//clamp the result between two max values to avoid the flip
 	if (Transform.Rotation.x > 89.0f)
@@ -107,7 +115,7 @@ void Camera::Update()
 {
 	if (CameraCollision != nullptr) {
 		CameraCollision->SetLocation(Transform.Location);
-		CameraCollision->DebugDraw(Vector3(255.0f));
+		//CameraCollision->DebugDraw(Vector3(255.0f));
 		//cout << "Camera collision is running..." << endl;
 	}
 }

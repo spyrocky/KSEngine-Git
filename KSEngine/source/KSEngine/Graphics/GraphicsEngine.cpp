@@ -2,6 +2,7 @@
 #include "GL/glew.h"
 #include "KSEngine/Graphics/Model.h"
 #include "KSEngine/Graphics/ShaderProgram.h"
+#include "KSEngine/CoreMinimal.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "KSEngine/Graphics/Texture.h"
@@ -186,11 +187,16 @@ ModelPtr GraphicsEngine::CreateSimpleModelShape(GeometricShapes Shape, ShaderPtr
 
 ModelPtr GraphicsEngine::ImportModel(const char* FilePath, ShaderPtr Shader)
 {
+	cout << "GE | Import model" << endl;
+
+	//initialise an empty model
 	ModelPtr NewModel = make_shared<Model>();
 
-	if (!NewModel->ImportMeshFromFile(FilePath, Shader)) {
+	//import the model from the file path
+	if (!NewModel->ImportMeshFromFile(FilePath, Shader))
 		return nullptr;
-	}
+
+	ModelStack.push_back(NewModel);
 
 	return NewModel;
 }
