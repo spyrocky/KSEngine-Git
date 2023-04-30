@@ -38,14 +38,8 @@ public:
 	//screen and camera coordinates
 	void ApplyScreenTransformations(ShaderPtr Shader);
 
-	//default camera 
-	CameraPtr EngineDefaultCam;
-
-	// Default Texture
-	TexturePtr DefaultEngineTexture;
-
-	MaterialPtr DefaultEngineMaterial;
-
+	//remove a model from the model stack
+	void RemoveModel(ModelPtr ModelToRemove);
 
 
 
@@ -69,5 +63,15 @@ private:
 	//store all model in the game
 	ModelPtrStack ModelStack;
 
-	
+
+public:
+
+	//default camera 
+	CameraPtr EngineDefaultCam;
+
+	// Default Texture
+	TexturePtr DefaultEngineTexture;
+
+	MaterialPtr DefaultEngineMaterial;
+
 };

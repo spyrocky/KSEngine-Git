@@ -13,7 +13,7 @@ Camera::Camera()
 
 	//@Param1 - Position of collision
 	//@Param2 - Offset of the location
-	//@Param3 - 
+	//@Param3 - size of the camera colision
 	CameraCollision = make_shared<BoxCollision>(Transform.Location,Vector3(0.0f),Vector3(1.0f));
 
 }
@@ -101,4 +101,14 @@ void Camera::RotateYaw(float Amount)
 	Transform.Rotation.y = glm::mod(Transform.Rotation.y, 360.0f);
 
 	UpdateDirectionVectors();
+}
+
+void Camera::Update()
+{
+	if (CameraCollision != nullptr) {
+		CameraCollision->SetLocation(Transform.Location);
+		CameraCollision->DebugDraw(Vector3(255.0f));
+
+		//cout << "Camera collision is running..." << endl;
+	}
 }

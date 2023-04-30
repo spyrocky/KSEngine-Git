@@ -29,7 +29,11 @@ public:
 	// return the graphic engine default texture
 	TexturePtr GetDefaultGEngineTexture();
 
+	//return the graphics enginr default material
 	MaterialPtr GetDefaultGEngineMaterial();
+
+	//remove a model from every where it need to be removed
+	void RemoveModelFromGame(ModelPtr& ModelToRemove);
 
 private:
 	Game();
