@@ -7,6 +7,7 @@
 #include "KSEngine/Graphics/Texture.h"
 #include "KSEngine/Graphics/Camera.h"
 #include "KSEngine/Graphics/Material.h"
+#include "KSEngine/Collisions/Collosion.h"
 
 using namespace std;
 
@@ -131,6 +132,15 @@ void GraphicsEngine::Draw()
 	ClearGraphics();
 
 	HandleWireframeMode(false);
+	 
+	/* //---- Test draw box colision ----
+	//create the box colision
+                                         // colision posision x,y,z , //           ,// colision size scale x,y,z
+	static BoxCollisionPtr col = make_shared<BoxCollision>(Vector3(-3.0f, 0.0f, 0.0f), Vector3(0.0f,0.0f, 0.0f), Vector3(3.0f, 3.0f, 3.0f));
+							//green color collision box
+	col->DebugDraw(Vector3(0.0f,255.0f,0.0f));
+	*/
+
 
 	//run through each Model and call its draw method
 	for (ModelPtr LModel : ModelStack) {

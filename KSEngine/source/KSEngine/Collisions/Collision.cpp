@@ -2,6 +2,8 @@
 #include "KSEngine/Graphics/Mesh.h"
 #include "KSEngine/Graphics/ShaderProgram.h"
 #include "KSEngine/Graphics/Material.h"
+#include "GL/glew.h"
+
 
 
 Collision::Collision(Vector3 Location, Vector3 Offset)
@@ -55,15 +57,42 @@ Vector3 BoxCollision::FindCenter() {
 }
 
 void BoxCollision::DebugDraw(Vector3 Colour) {
+	//if there is no debug mesh then create one
 	if (DebugMesh == nullptr) {
+		//make a wireframe shader
 		DebugShader = make_shared<ShaderProgram>();
 		DebugShader->InitVFShader({
 			L"Game/Shaders/WireframeShader/WireframeShader.svert",
 			L"Game/Shaders/WireframeShader/WireframeShader.sfrag"
 			});
-
+		//create a box
 		DebugMesh = make_shared<Mesh>();
+		if (!DebugMesh->CreateSimpleShape(GeometricShapes::Cube, DebugShader,0)) {
+			DebugMesh = nullptr;
+			DebugShader = nullptr;
+			return;
+		}
+
+		//create a material and remove maps
+		DebugMaterial = make_shared<Material>();
+		DebugMaterial->BaseColour.TextureV3 = nullptr;
+		DebugMaterial->SpecularColour.TextureV3 = nullptr;
+		DebugMaterial->EmissiveColour.TextureV3 = nullptr;
 	}
+
+	// convert current rendering mode into the line mode
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//transform the debug mesh to fit the collision value 
+	DebugMesh->Transform.Location = FindCenter();
+	DebugMesh->Transform.Location = Transform.Rotation;
+	DebugMesh->Transform.Scale = Dimensions / 2.0f;
+	// draw the mesh 
+	DebugMesh->Draw(DebugMaterial);
+	//change the colour ofthe debug wireframe mesh
+	DebugShader->RunShader();
+	DebugShader->SetVector3("InColour", Colour);
+	// return to the default draw mode
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 }
 

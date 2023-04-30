@@ -75,21 +75,21 @@ void Game::Run()
         //create meshes / 3 Primitives
         Model = Graphics->ImportModel("Game/Models/Primitives/Cube.fbx", TextureShader);
         Model2 = Graphics->ImportModel("Game/Models/Primitives/Sphere.fbx", TextureShader);
-       // Model3 = Graphics->ImportModel("Game/Models/Primitives/Plane.fbx", TextureShader);
+
         //set material of the model
-        Model->SetMaterialBySlot(0, MConcrete);
-        Model2->SetMaterialBySlot(0, MGrid);
-       // Model3->SetMaterialBySlot(0, MConcrete);
+        Model->SetMaterialBySlot(0, MGrid);
+        Model2->SetMaterialBySlot(0, MConcrete);
 
-        Model2->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(10.0f, 0.0f,0.0f);
+        Model2->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(1.0f, 0.0f,0.0f);
 
-        //initial transformations for the meshes        
+        // transformations for the model location        
         Model->Transform.Location = Vector3(0.0f, 0.0f, 1.0f);
         Model2->Transform.Location = Vector3(0.0f, 0.0f, -1.0f);
-       // Model3->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+      
 
         //import custom meshes
-        Wall = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_Wall_Damaged_2x1_A.obj", TextureShader);
+        Wall = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
+        Wall2 = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
 
         if (Wall != nullptr) {
             //transform the wall

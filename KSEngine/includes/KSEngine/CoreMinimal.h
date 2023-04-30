@@ -38,6 +38,13 @@ typedef vector<MaterialPtr> MaterialPtrStack;
 class Camera;
 typedef shared_ptr<Camera> CameraPtr;
 
+class Collision;
+typedef shared_ptr<Collision> CollisionPtr;
+typedef vector<CollisionPtr> CollisionPtrStack;
+
+class BoxCollision;
+typedef  shared_ptr<BoxCollision> BoxCollisionPtr;
+
 
 //useful for shape data and VAOs
 typedef vector<float>  PositionMatrix;

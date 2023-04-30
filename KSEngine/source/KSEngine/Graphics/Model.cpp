@@ -2,6 +2,7 @@
 #include "KSEngine/Graphics/Mesh.h"
 #include "KSEngine/Game.h"
 #include "KSEngine/Graphics/Vertex.h"
+#include "KSEngine/Collisions/Collosion.h"
 //Assimp
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
@@ -10,6 +11,7 @@
 Model::Model()
 {
 	ModelFilePath = "";
+	ModelCollision = nullptr;
 }
 
 Model::~Model()
@@ -73,10 +75,16 @@ bool Model::ImportMeshFromFile(const char* ImportFilePath, ShaderPtr ModelShader
 
 void Model::Draw()
 {
+	if (ModelCollision != nullptr) {
+		ModelCollision->DebugDraw(Vector3(255.0f));
+	}
+
+
 	//cycle through the mesh and draw each one
 	for (MeshPtr LMesh : MeshStack) {
+		//assign the model thransformation to the mesh
 		LMesh->Transform = this->Transform;
-
+		// draw the mesh using the material slot it has been assign 
 		LMesh->Draw(MaterialStack[LMesh->GetMaterialSlot()]);
 	}
 }
@@ -102,6 +110,13 @@ MaterialPtr Model::GetMaterialBySlot(UNint SlotIndex) const
 	}
 
 	return MaterialStack[SlotIndex];
+}
+
+CollisionPtr Model::AddCollisionToModel(Vector3 Dimensions, Vector3 Offset)
+{
+	ModelCollision = make_shared<BoxCollision>(Transform.Location, Offset, Dimensions);
+
+	return ModelCollision;
 }
 
 void Model::FindAndImportSceneMeshes(aiNode* Node, const aiScene* Scene)

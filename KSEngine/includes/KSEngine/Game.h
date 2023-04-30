@@ -73,4 +73,7 @@ private:
 
 	//ModelPtr Wall2;
 	ModelPtr Wall;
+	ModelPtr Tree;
+	ModelPtr Coin;
+	ModelPtr Trex;
 };

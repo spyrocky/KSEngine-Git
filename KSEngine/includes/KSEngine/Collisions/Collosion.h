@@ -39,6 +39,7 @@ protected:
 	// Visual mesh for debugging
 	MeshPtr DebugMesh;
 	ShaderPtr DebugShader;
+	MaterialPtr DebugMaterial;
 };
 
 class BoxCollision :
