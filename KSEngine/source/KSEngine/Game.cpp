@@ -1,10 +1,15 @@
 #include "KSEngine/Game.h"
 #include "KSEngine/Graphics/Model.h"
 #include "KSEngine/Graphics/GraphicsEngine.h"
+#include "KSEngine/Graphics/ShaderProgram.h"
+#include "KSEngine/Graphics/Texture.h"
+#include "KSEngine/Graphics/Mesh.h"
 #include "KSEngine/Input.h"
 #include "KSEngine/Graphics/Camera.h"
 #include "KSEngine/Graphics/Material.h"
 #include "KSEngine/Collisions/Collosion.h"
+#include "KSEngine/Graphics/Text.h"
+#include "SDL2/SDL.h"
 
 
 Game& Game::GetGameInstance()
@@ -62,95 +67,98 @@ void Game::Run()
             L"Game/Shaders/TextureShader/TextureShader.sfrag"
             });
 
-        //create textures
-        TexturePtr TConcrete = Graphics->CreateTexture("Game/Textures/ConcreteFloor.jpg");
-        TexturePtr TGrid = Graphics->CreateTexture("Game/Textures/ColourGrid.jpg");
-
-        // create the materials
-        MaterialPtr MConcrete = make_shared<Material>();
-        MaterialPtr MGrid = make_shared<Material>();
-
-        //Assign base coloe using the texture
-        MConcrete->BaseColour.TextureV3 = TConcrete;
-        MGrid->BaseColour.TextureV3 = TGrid;
-
-        //create meshes / 3 Primitives
-        Model = Graphics->ImportModel("Game/Models/Primitives/Cube.fbx", TextureShader);
-        Model2 = Graphics->ImportModel("Game/Models/Primitives/Sphere.fbx", TextureShader);      
-
-        //set material of the model
-        Model->SetMaterialBySlot(0, MGrid);
-        Model2->SetMaterialBySlot(0, MConcrete);
-
-        Model2->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(1.0f, 0.0f,0.0f);
-
-        // transformations for the model location        
-        Model->Transform.Location = Vector3(0.0f,0.0f, 0.0f);
-        Model2->Transform.Location = Vector3(20.0f, 0.0f, 0.0f);
-      
-
-        //import custom meshes
-        Wall = Graphics->ImportModel("Game/Models/damaged-wall/SM_Wall_Damaged.obj", TextureShader);
-        
-        //transform the wall
-        Wall->Transform.Scale = Vector3(0.05f);
-        Wall->Transform.Rotation.y = 90.0f;
-        Wall->Transform.Location = Vector3(50.0f, -2.0f, 0.0f);
-
-        //create the texture
-        TexturePtr TWall = Graphics->CreateTexture("Game/Models/damaged-wall/textures/T_Wall_Damaged_2x1_A_BC.png");
-        MaterialPtr MWall = make_shared<Material>();
-        MWall->BaseColour.TextureV3 = TWall;
-
-
-        //apply the material
-        Wall->SetMaterialBySlot(1, MWall);
-
-        //collision wireframe box collision size x,y,z   
-        Model->AddCollisionToModel(Vector3(2.5f));
-        Model2->AddCollisionToModel(Vector3(4.0f));
-        Wall->AddCollisionToModel(Vector3(2.5f, 4.0f, 10.0f), Vector3(0.0f, 2.0f, 0.0f));
-
 
         //---------------------------------- Game obj -------------------------------------
 
-        Trex = Graphics->ImportModel("Game/Models/Dinosaur/FBX/Trex.fbx", TextureShader);
+        
+        //import obj custom mesh to game (obstacles)
         Tree = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
-        Coin = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);       
+        Tree2 = Graphics->ImportModel("Game/Models/Tree/tree-round.obj", TextureShader);
+        Tree3 = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
+        Tree4 = Graphics->ImportModel("Game/Models/Tree/tree-round.obj", TextureShader);
+        Tree5 = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
 
-        Tree->Transform.Scale = Vector3(0.05f);
-        Tree->Transform.Rotation.y = 90.0f;
-        Tree->Transform.Location = Vector3(2.0f, -2.0f, 0.0f);
 
-        Coin->Transform.Scale = Vector3(0.05f);
+        // items collectable
+        Coin = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);  
+        Coin2 = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
+        Coin3 = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
+
+
+
+
+        //Transform all
+        Tree->Transform.Scale = Vector3(0.2f);      
+        Tree->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+
+        Tree2->Transform.Scale = Vector3(0.2f);
+        Tree2->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+
+        Tree3->Transform.Scale = Vector3(0.2f);
+        Tree3->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+
+        Tree4->Transform.Scale = Vector3(0.2f);
+        Tree4->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+
+        Tree5->Transform.Scale = Vector3(0.2f);
+        Tree5->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+
+
+        Coin->Transform.Scale = Vector3(0.2f);
         Coin->Transform.Rotation.y = 90.0f;
-        Coin->Transform.Location = Vector3(5.0f, -2.0f, 0.0f);  
+        Coin->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);  
+
+        Coin2->Transform.Scale = Vector3(0.2f);
+        Coin2->Transform.Rotation.y = 90.0f;
+        Coin2->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+
+        Coin3->Transform.Scale = Vector3(0.2f);
+        Coin3->Transform.Rotation.y = 90.0f;
+        Coin3->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
        
 
+        //create texture
         TexturePtr TTree = Graphics->CreateTexture("Game/Textures/GreenMosaic.jpg");
+        TexturePtr TCoin = Graphics->CreateTexture("Game/Textures/Spongebob.jpg");
+
         //create a material
         MaterialPtr MTree = make_shared<Material>();
         MTree->BaseColour.TextureV3 = TTree;
 
-        TexturePtr TCoin = Graphics->CreateTexture("Game/Textures/Spongebob.jpg");
-        //create a material
         MaterialPtr MCoin = make_shared<Material>();
         MCoin->BaseColour.TextureV3 = TCoin;
 
-        TexturePtr TTrex = Graphics->CreateTexture("Game/Textures/GreenMosaic.jpg");
-        //create a material
-        MaterialPtr MTrex = make_shared<Material>();
-        MTrex->BaseColour.TextureV3 = TTrex;
 
-        
         //apply the material
        Tree->SetMaterialBySlot(1, MTree);
-       Coin->SetMaterialBySlot(1, MCoin);
-       Trex->SetMaterialBySlot(1, MTrex);
+       Tree2->SetMaterialBySlot(1, MTree);
+       Tree3->SetMaterialBySlot(1, MTree);
+       Tree4->SetMaterialBySlot(1, MTree);
+       Tree5->SetMaterialBySlot(1, MTree);
 
+       Coin->SetMaterialBySlot(1, MCoin);
+       Coin2->SetMaterialBySlot(1, MCoin);
+       Coin3->SetMaterialBySlot(1, MCoin);
+
+     
+       //Red light
+       Coin->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(1.0f, 0.0f, 0.0f);
+       //Green light
+       Coin2->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(0.0f, 1.0f, 0.0f);
+
+
+
+       //Add collision box
        Tree->AddCollisionToModel(Vector3(2.5f, 5.0f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
+       Tree2->AddCollisionToModel(Vector3(2.5f, 5.0f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
+       Tree3->AddCollisionToModel(Vector3(2.5f, 5.0f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
+       Tree4->AddCollisionToModel(Vector3(2.5f, 5.0f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
+       Tree5->AddCollisionToModel(Vector3(2.5f, 5.0f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
+
        Coin->AddCollisionToModel(Vector3(2.5f, 2.5f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
-       Trex->AddCollisionToModel(Vector3(5.0f, 5.0f, 5.0f), Vector3(0.0f, 2.0f, 0.0f));
+       Coin2->AddCollisionToModel(Vector3(2.5f, 2.5f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
+       Coin3->AddCollisionToModel(Vector3(2.5f, 2.5f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
+      
 
     }
 
@@ -208,28 +216,7 @@ void Game::ProcessInput()
     }//move camera down
     if (GameInput->IsKeyDown(SDL_SCANCODE_E)) {
         CameraInput += CamDirection.Up;
-    }
-
-    /*
-    //Zoom in
-    if (GameInput->IsKeyDown(SDL_SCANCODE_Z)) {
-        CameraInput.x += CamData.FOV * 0.01f;
-
-        cout << "FOV in: " << CameraInput.x << endl;
-    }
-
-    //Zoom Out
-    if (GameInput->IsKeyDown(SDL_SCANCODE_C)) {
-        CameraInput.x += -CamData.FOV * 0.01f;
-        cout << "FOV out: " << CameraInput.x << endl;
-    }
-
-    //Zoom Reset to 70
-    if (GameInput->IsKeyDown(SDL_SCANCODE_X)) {
-        CameraInput += CamData.FOV;
-
-        cout << "FOV reset: " << CameraInput.x << endl;
-    }*/
+    }  
 
     //move the camera based on input
     Graphics->EngineDefaultCam->AddMovementInput(CameraInput);
@@ -257,34 +244,20 @@ void Game::Update()
     //update the last frame tiem for the next update
     LastFrameTime = CurrentFrameTime;
 
-    //just move toward slowly for the obstacle such as tree and coin
-    Wall->Transform.Location.x += -1.0f * GetFDeltaTime();
+    
+    //Rotate collectable item such as coin
+    if (Coin != nullptr) {
+        Coin->Transform.Rotation.y += 50.0f * GetFDeltaTime(); //rotate coin
+    }
 
+    if (Coin2 != nullptr) {
+        Coin->Transform.Rotation.y += 50.0f * GetFDeltaTime(); //rotate coin
+    }
 
-    //Collision check and collectable item such as coin
-    if (Wall != nullptr) {
-        Wall->Transform.Rotation.y += 50.0f * GetFDeltaTime();
+    if (Coin3 != nullptr) {
+        Coin->Transform.Rotation.y += 50.0f * GetFDeltaTime(); //rotate coin
     }
     
-
-
-    //TODO:Handle Logic
-    if(Model != nullptr){
-    Model->Transform.Rotation.z += 50.0f * GetFDeltaTime();
-    Model->Transform.Rotation.x += 50.0f * GetFDeltaTime();
-    Model->Transform.Rotation.y += 50.0f * GetFDeltaTime();
-    }
-
-    if (Model != nullptr) {
-        Model2->Transform.Rotation.z -= 50.0f * GetFDeltaTime();
-        Model2->Transform.Rotation.x -= 50.0f * GetFDeltaTime();
-        Model2->Transform.Rotation.y -= 50.0f * GetFDeltaTime();
-    }
-
-    if (Wall != nullptr) {
-        Wall->Transform.Rotation.y += 50.0f * GetFDeltaTime();
-    }
-
         
     Graphics->EngineDefaultCam->Update();
 
@@ -293,12 +266,18 @@ void Game::Update()
     
     //check collider of 2 object
 
-    // if we run into the wall then remove it from game
-    if (Wall != nullptr && CamCol->IsOverlapping(*Wall->GetCollision())) {      
+    // if we run into the coin then remove it from game
+    if (Coin != nullptr && CamCol->IsOverlapping(*Coin->GetCollision())) {
         //cout << "It Collider !" << endl;
         //Remove it from the game
-        RemoveModelFromGame(Wall);
+        RemoveModelFromGame(Coin);
     }
+
+    if (Coin2 != nullptr && CamCol->IsOverlapping(*Coin2->GetCollision()))
+        RemoveModelFromGame(Coin2);
+
+    if (Coin3 != nullptr && CamCol->IsOverlapping(*Coin3->GetCollision()))
+        RemoveModelFromGame(Coin3);
     
 
 }
@@ -309,9 +288,12 @@ void Game::Draw()
   // TODO : Draw graphic on screen
     Graphics->Draw();
 
+    /*SDL_Color TextColour = {255};
+      ScoreText = make_shared<Text>("Game/Fonts/BrunoAce-Regular.ttf", "Score: 0", 25, 25, TextColour);*/
+
     //debug draw the camera collision
-    CollisionPtr CamCol =  Graphics->EngineDefaultCam->GetCameraCollision();
-    CamCol->DebugDraw(Vector3(0.0f, 255.0f, 0.0f));
+    CollisionPtr CamCol =  Graphics->EngineDefaultCam->GetCameraCollision();    
+    //CamCol->DebugDraw(Vector3(0.0f, 255.0f, 0.0f));
 
     //check collider of 2 object
    /* if (Tree != nullptr && CamCol->IsOverlapping(*Tree->GetCollision())) {
@@ -324,9 +306,27 @@ void Game::Draw()
         CamCol->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
     }*/
 
-    Model->GetCollision()->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
-    Model2->GetCollision()->DebugDraw(Vector3(0.0f, 255.0f, 0.0f));
-    Wall->GetCollision()->DebugDraw(Vector3(0.0f, 0.0f, 255.0f));
+    if (Coin != nullptr && CamCol->IsOverlapping(*Coin->GetCollision())) {
+        CamCol->DebugDraw(Vector3(0.0f, 255.0f, 0.0f));
+    }
+    else {
+        CamCol->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
+    }
+
+    if (Coin2 != nullptr && CamCol->IsOverlapping(*Coin2->GetCollision())) {
+        CamCol->DebugDraw(Vector3(0.0f, 255.0f, 0.0f));
+    }
+    else {
+        CamCol->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
+    }
+
+    if (Coin3 != nullptr && CamCol->IsOverlapping(*Coin3->GetCollision())) {
+        CamCol->DebugDraw(Vector3(0.0f, 255.0f, 0.0f));
+    }
+    else {
+        CamCol->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
+    }
+
 
     Graphics->PresentGraphics();
 }

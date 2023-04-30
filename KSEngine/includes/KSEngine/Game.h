@@ -70,13 +70,14 @@ private:
 	//read the input of the player
 	Input* GameInput;
 
-	//temporary mesh variables
-
-	ModelPtr Model2;
-	ModelPtr Model;
-
 	ModelPtr Wall;
 	ModelPtr Tree;
+	ModelPtr Tree2;
+	ModelPtr Tree3;
+	ModelPtr Tree4;
+	ModelPtr Tree5;
 	ModelPtr Coin;
+	ModelPtr Coin2;
+	ModelPtr Coin3;
 	ModelPtr Trex;
 };
