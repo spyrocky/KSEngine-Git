@@ -93,12 +93,12 @@ void Game::Run()
       
 
         //import custom meshes
-        Wall = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_Wall_Damaged.obj", TextureShader);
+        Wall = Graphics->ImportModel("Game/Models/damaged-wall/SM_Wall_Damaged.obj", TextureShader);
         
         //transform the wall
         Wall->Transform.Scale = Vector3(0.05f);
         Wall->Transform.Rotation.y = 90.0f;
-        Wall->Transform.Location = Vector3(10.0f, -2.0f, 0.0f);
+        Wall->Transform.Location = Vector3(25.0f, -2.0f, 0.0f);
 
         //create the texture
         TexturePtr TWall = Graphics->CreateTexture("Game/Models/damaged-wall/textures/T_Wall_Damaged_2x1_A_BC.png");
@@ -110,7 +110,7 @@ void Game::Run()
         Wall->SetMaterialBySlot(1, MWall);
 
         //collision wireframe box collision size x,y,z                  
-        Wall->AddCollisionToModel(Vector3(10.0f, 4.0f, 10.0f), Vector3(0.0f, 2.0f, 0.0f));
+        Wall->AddCollisionToModel(Vector3(2.5f, 4.0f, 10.0f), Vector3(0.0f, 2.0f, 0.0f));
 
         //---------------------------------- Game obj -------------------------------------
 
@@ -276,7 +276,7 @@ void Game::Update()
 
     //Do collision stuff
     CollisionPtr CamCol = Graphics->EngineDefaultCam->GetCameraCollision();
-
+    
     //check collider of 2 object
 
     // if we run into the wall then remove it from game
@@ -297,10 +297,10 @@ void Game::Draw()
 
     //debug draw the camera collision
     CollisionPtr CamCol =  Graphics->EngineDefaultCam->GetCameraCollision();
-
+    CamCol->DebugDraw(Vector3(0.0f, 255.0f, 0.0f));
 
     //check collider of 2 object
-    if (Tree != nullptr && CamCol->IsOverlapping(*Tree->GetCollision())) {
+   /* if (Tree != nullptr && CamCol->IsOverlapping(*Tree->GetCollision())) {
         //if collider then draw green collider if colliding with Tree
         CamCol->DebugDraw(Vector3(0.0f,255.0f,0.0f));
         cout << "It Collider !" << endl;
@@ -308,7 +308,7 @@ void Game::Draw()
     else {
         //if not Draw red collider  with Tree
         CamCol->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
-    }
+    }*/
 
     Model->GetCollision()->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
     Model2->GetCollision()->DebugDraw(Vector3(0.0f, 255.0f, 0.0f));

@@ -60,6 +60,9 @@
     <ClInclude Include="includes\KSEngine\Collisions\Collosion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\KSEngine\Graphics\Text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\stb_image\stb_image.cpp">
@@ -102,6 +105,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\KSEngine\Graphics\Collosion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\KSEngine\Graphics\Text.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

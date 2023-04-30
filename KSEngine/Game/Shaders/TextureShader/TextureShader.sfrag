@@ -71,14 +71,21 @@ void main() {
 
 	DirLights[0].Colour = vec3(1.0f);
 	DirLights[0].Direction = vec3(0.0f, -1.0f, 0.0f);
-	DirLights[0].AmbientLight = vec3(1.0f);
+	DirLights[0].AmbientLight = vec3(0.25f);
 
 	// create a custom point light
-	PointLights[0].Colour = vec3(1.0f);
+	PointLights[0].Colour = vec3(1.0f, 0.0f, 0.0f);
 	PointLights[0].Position = vec3(-2.0f, -2.0f, 0.0f);
 	PointLights[0].Attenuation = 10.0f;
 
+	PointLights[1].Colour = vec3(0.0f, 0.0f, 1.0f);
+	PointLights[1].Position = vec3(2.0f, 2.0f, 0.0f);
+	PointLights[1].Attenuation = 10.0f;
+
 	vec3 result = CalculatePointLight(SMat, ViewDir, PointLights[0]);
+
+	result += CalculateDirLight(SMat, ViewDir, DirLights[0]);
+	result += CalculatePointLight(SMat, ViewDir, PointLights[1]);
 
 	// texture() accepts colour and coordinates to create an openGL texture
 	OutColour = vec4(result, 1.0f);

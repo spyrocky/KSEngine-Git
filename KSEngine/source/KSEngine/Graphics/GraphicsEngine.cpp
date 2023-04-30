@@ -8,6 +8,7 @@
 #include "KSEngine/Graphics/Camera.h"
 #include "KSEngine/Graphics/Material.h"
 #include "KSEngine/Collisions/Collosion.h"
+#include "SDL2/SDL_ttf.h"
 
 using namespace std;
 
@@ -96,6 +97,12 @@ bool GraphicsEngine::InitGE(const char* WTitle, bool bFullscreen, int WWidth, in
 
 	if (InitGLEW != GLEW_OK) {
 		cout << "Glew Failed: " << glewGetErrorString(InitGLEW) << endl;
+		return false;
+	}
+
+	//run ttf and fail if it fails
+	if (TTF_Init() == -1) {
+		cout << "TTF Failed to init " << endl;
 		return false;
 	}
 

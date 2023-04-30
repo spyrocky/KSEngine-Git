@@ -108,7 +108,6 @@ void Camera::Update()
 	if (CameraCollision != nullptr) {
 		CameraCollision->SetLocation(Transform.Location);
 		CameraCollision->DebugDraw(Vector3(255.0f));
-
 		//cout << "Camera collision is running..." << endl;
 	}
 }
