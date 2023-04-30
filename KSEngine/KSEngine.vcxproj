@@ -136,7 +136,7 @@
     <ClInclude Include="includes\KSEngine\CoreMinimal.h" />
     <ClInclude Include="includes\KSEngine\Game.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Camera.h" />
-    <ClInclude Include="includes\KSEngine\Graphics\Collosion.h" />
+    <ClInclude Include="includes\KSEngine\Collisions\Collosion.h" />
     <ClInclude Include="includes\KSEngine\Graphics\GraphicsEngine.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Material.h" />
     <ClInclude Include="includes\KSEngine\Graphics\Mesh.h" />
@@ -154,7 +154,7 @@
     <ClCompile Include="includes\KSEngine\Graphics\Collosion.cpp" />
     <ClCompile Include="source\KSEngine\Game.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Camera.cpp" />
-    <ClCompile Include="source\KSEngine\Graphics\Collision.cpp" />
+    <ClCompile Include="source\KSEngine\Collisions\Collision.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\GraphicsEngine.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Material.cpp" />
     <ClCompile Include="source\KSEngine\Graphics\Mesh.cpp" />
@@ -170,6 +170,8 @@
     <None Include="Game\Shaders\TextureShader\TextureShader.svert" />
     <None Include="Game\Shaders\VertexShader\VertexShader.sfrag" />
     <None Include="Game\Shaders\VertexShader\VertexShader.svert" />
+    <None Include="Game\Shaders\WireframeShader\WireframeShader.sfrag" />
+    <None Include="Game\Shaders\WireframeShader\WireframeShader.svert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\Downloads\New folder\Wall_Damaged_BC.png" />
