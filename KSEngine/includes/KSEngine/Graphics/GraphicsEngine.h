@@ -41,7 +41,7 @@ public:
 	//remove a model from the model stack
 	void RemoveModel(ModelPtr ModelToRemove);
 
-
+	SDL_Renderer* UIRenderer;
 
 private:
 	//this will hold the window
@@ -73,5 +73,7 @@ public:
 	TexturePtr DefaultEngineTexture;
 
 	MaterialPtr DefaultEngineMaterial;
+
+	TextPtr ScoreText;
 
 };

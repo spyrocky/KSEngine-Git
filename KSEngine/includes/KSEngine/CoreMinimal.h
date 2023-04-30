@@ -45,6 +45,8 @@ typedef vector<CollisionPtr> CollisionPtrStack;
 class BoxCollision;
 typedef  shared_ptr<BoxCollision> BoxCollisionPtr;
 
+class Text;
+typedef shared_ptr<Text> TextPtr;
 
 //useful for shape data and VAOs
 typedef vector<float>  PositionMatrix;

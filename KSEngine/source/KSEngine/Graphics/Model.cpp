@@ -177,6 +177,8 @@ MeshPtr Model::ConvertImportMeshToEngineMesh(aiMesh* ImportMesh, const aiScene* 
 			ImportMesh->mTextureCoords[0][i].y
 		);
 
+		
+
 		//add the vertex into the vertices array
 		Vertices.push_back(LVertex);
 	}

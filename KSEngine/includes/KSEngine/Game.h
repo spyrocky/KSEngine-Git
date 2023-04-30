@@ -22,7 +22,7 @@ public:
 	float GetFDeltaTime() { return static_cast<float>(DeltaTime); }
 
 	//return the graphics engine
-	GraphicsEnginePtr GetGraphics() { return Graphics; }
+	GraphicsEnginePtr GetGraphicsEngine() { return Graphics; }
 	//set bIsGameOver to true
 	void CloseApp() { bIsGameOver = true; }
 

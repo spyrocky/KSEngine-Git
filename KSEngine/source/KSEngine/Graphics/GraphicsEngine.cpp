@@ -9,6 +9,7 @@
 #include "KSEngine/Graphics/Material.h"
 #include "KSEngine/Collisions/Collosion.h"
 #include "SDL2/SDL_ttf.h"
+#include "KSEngine/Graphics/Text.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ GraphicsEngine::GraphicsEngine()
 	bWireframeMode = false;
 	//initialize camera -2.0 back on z axis
 	EngineDefaultCam = make_shared<Camera>();
+	ScoreText = nullptr;
 }
 
 GraphicsEngine::~GraphicsEngine()
@@ -100,6 +102,13 @@ bool GraphicsEngine::InitGE(const char* WTitle, bool bFullscreen, int WWidth, in
 		return false;
 	}
 
+	/*UIRenderer = SDL_CreateRenderer(SdlWindow, 0, NULL);
+
+	if (UIRenderer != NULL) {
+		cout << "UIRenderer Failed to init " << SDL_GetError() << endl;
+		return false;
+	}*/
+
 	//run ttf and fail if it fails
 	if (TTF_Init() == -1) {
 		cout << "TTF Failed to init " << endl;
@@ -115,6 +124,10 @@ bool GraphicsEngine::InitGE(const char* WTitle, bool bFullscreen, int WWidth, in
 	//create Default engine material
 	//add material when create auto assign the default texture
 	DefaultEngineMaterial = make_shared<Material>();
+
+	/*SDL_Color TextColour = {255};
+	ScoreText = make_shared<Text>("Game/Fonts/BrunoAce-Regular.ttf", "Score: 0", 25, 25, TextColour);*/
+
 
 	return true;
 }
@@ -140,19 +153,11 @@ void GraphicsEngine::Draw()
 
 	HandleWireframeMode(false);
 	 
-	/* //---- Test draw box colision ----
-	//create the box colision
-                                         // colision posision x,y,z , //           ,// colision size scale x,y,z
-	static BoxCollisionPtr col = make_shared<BoxCollision>(Vector3(-3.0f, 0.0f, 0.0f), Vector3(0.0f,0.0f, 0.0f), Vector3(3.0f, 3.0f, 3.0f));
-							//green color collision box
-	col->DebugDraw(Vector3(0.0f,255.0f,0.0f));
-	*/
-
-
 	//run through each Model and call its draw method
 	for (ModelPtr LModel : ModelStack) {
 		LModel->Draw();
 	}
+
 
 
 }

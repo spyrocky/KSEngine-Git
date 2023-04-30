@@ -76,10 +76,7 @@ void Game::Run()
 
         //create meshes / 3 Primitives
         Model = Graphics->ImportModel("Game/Models/Primitives/Cube.fbx", TextureShader);
-        Model2 = Graphics->ImportModel("Game/Models/Primitives/Sphere.fbx", TextureShader);
-
-        Model->AddCollisionToModel(Vector3(2.5f));
-        Model2->AddCollisionToModel(Vector3(4.0f));
+        Model2 = Graphics->ImportModel("Game/Models/Primitives/Sphere.fbx", TextureShader);      
 
         //set material of the model
         Model->SetMaterialBySlot(0, MGrid);
@@ -88,8 +85,8 @@ void Game::Run()
         Model2->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(1.0f, 0.0f,0.0f);
 
         // transformations for the model location        
-        Model->Transform.Location = Vector3(0.0f, 0.0f, 1.0f);
-        Model2->Transform.Location = Vector3(0.0f, 0.0f, -1.0f);
+        Model->Transform.Location = Vector3(0.0f,0.0f, 0.0f);
+        Model2->Transform.Location = Vector3(20.0f, 0.0f, 0.0f);
       
 
         //import custom meshes
@@ -98,7 +95,7 @@ void Game::Run()
         //transform the wall
         Wall->Transform.Scale = Vector3(0.05f);
         Wall->Transform.Rotation.y = 90.0f;
-        Wall->Transform.Location = Vector3(25.0f, -2.0f, 0.0f);
+        Wall->Transform.Location = Vector3(50.0f, -2.0f, 0.0f);
 
         //create the texture
         TexturePtr TWall = Graphics->CreateTexture("Game/Models/damaged-wall/textures/T_Wall_Damaged_2x1_A_BC.png");
@@ -109,12 +106,15 @@ void Game::Run()
         //apply the material
         Wall->SetMaterialBySlot(1, MWall);
 
-        //collision wireframe box collision size x,y,z                  
+        //collision wireframe box collision size x,y,z   
+        Model->AddCollisionToModel(Vector3(2.5f));
+        Model2->AddCollisionToModel(Vector3(4.0f));
         Wall->AddCollisionToModel(Vector3(2.5f, 4.0f, 10.0f), Vector3(0.0f, 2.0f, 0.0f));
+
 
         //---------------------------------- Game obj -------------------------------------
 
-      /*  Trex = Graphics->ImportModel("Game/Models/Dinosaur/FBX/Trex.fbx", TextureShader);
+        Trex = Graphics->ImportModel("Game/Models/Dinosaur/FBX/Trex.fbx", TextureShader);
         Tree = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
         Coin = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);       
 
@@ -124,8 +124,7 @@ void Game::Run()
 
         Coin->Transform.Scale = Vector3(0.05f);
         Coin->Transform.Rotation.y = 90.0f;
-        Coin->Transform.Location = Vector3(5.0f, -2.0f, 0.0f);     
-
+        Coin->Transform.Location = Vector3(5.0f, -2.0f, 0.0f);  
        
 
         TexturePtr TTree = Graphics->CreateTexture("Game/Textures/GreenMosaic.jpg");
@@ -133,11 +132,26 @@ void Game::Run()
         MaterialPtr MTree = make_shared<Material>();
         MTree->BaseColour.TextureV3 = TTree;
 
+        TexturePtr TCoin = Graphics->CreateTexture("Game/Textures/Spongebob.jpg");
+        //create a material
+        MaterialPtr MCoin = make_shared<Material>();
+        MCoin->BaseColour.TextureV3 = TCoin;
 
+        TexturePtr TTrex = Graphics->CreateTexture("Game/Textures/GreenMosaic.jpg");
+        //create a material
+        MaterialPtr MTrex = make_shared<Material>();
+        MTrex->BaseColour.TextureV3 = TTrex;
 
+        
         //apply the material
-       Tree->SetMaterialBySlot(1, MTree);     
-*/
+       Tree->SetMaterialBySlot(1, MTree);
+       Coin->SetMaterialBySlot(1, MCoin);
+       Trex->SetMaterialBySlot(1, MTrex);
+
+       Tree->AddCollisionToModel(Vector3(2.5f, 5.0f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
+       Coin->AddCollisionToModel(Vector3(2.5f, 2.5f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
+       Trex->AddCollisionToModel(Vector3(5.0f, 5.0f, 5.0f), Vector3(0.0f, 2.0f, 0.0f));
+
     }
 
     //as long as the game is not over

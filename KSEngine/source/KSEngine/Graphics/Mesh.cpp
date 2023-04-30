@@ -84,7 +84,7 @@ void Mesh::Draw(MaterialPtr MeshMaterial)
 	}
 
 	//create the world and screen positions for this object
-	Game::GetGameInstance().GetGraphics()->ApplyScreenTransformations(MeshShader);
+	Game::GetGameInstance().GetGraphicsEngine()->ApplyScreenTransformations(MeshShader);
 
 	//draw the VAO
 	MeshVAO->Draw();
