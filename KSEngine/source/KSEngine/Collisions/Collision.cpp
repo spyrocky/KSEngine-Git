@@ -85,7 +85,7 @@ void BoxCollision::DebugDraw(Vector3 Colour) {
 	//transform the debug mesh to fit the collision value 
 	DebugMesh->Transform.Location = FindCenter();
 	DebugMesh->Transform.Location = Transform.Rotation;
-	DebugMesh->Transform.Scale = Dimensions / 2.0f;
+	DebugMesh->Transform.Scale = Dimensions;
 	// draw the mesh 
 	DebugMesh->Draw(DebugMaterial);
 	//change the colour ofthe debug wireframe mesh

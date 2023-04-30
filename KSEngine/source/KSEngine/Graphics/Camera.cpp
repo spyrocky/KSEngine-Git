@@ -1,17 +1,20 @@
 #include "KSEngine/Graphics/Camera.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "KSEngine/Game.h"
+#include "KSEngine/Collisions/Collosion.h"
+
 
 Camera::Camera()
 {
 	
 	UpdateDirectionVectors();
 
-	//Transform.Location = Vector3(-2.0f,0.0f,0.0f);
-	//Transform.Location -= Directions.Forward * 2.0f;
 	Transform.Location += -Directions.Forward * 2.0f;
 
-	//UpdateDirectionVectors();
+	//@Param1 - Position of collision
+	//@Param2 - Offset of the location
+	//@Param3 - 
+	CameraCollision = make_shared<BoxCollision>(Transform.Location,Vector3(0.0f),Vector3(1.0f));
 
 }
 
@@ -92,7 +95,7 @@ void Camera::RotatePitch(float Amount)
 void Camera::RotateYaw(float Amount)
 {
 	//can currently increase to a max number
-	Transform.Rotation.y += Amount;
+	Transform.Rotation.y += Amount * CameraData.LookSensetivity;
 
 	//when the yaw gets to 360 change it to 0
 	Transform.Rotation.y = glm::mod(Transform.Rotation.y, 360.0f);

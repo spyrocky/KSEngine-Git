@@ -129,7 +129,7 @@ void GraphicsEngine::ClearGraphics()
 
 void GraphicsEngine::Draw()
 {
-	ClearGraphics();
+
 
 	HandleWireframeMode(false);
 	 
@@ -147,7 +147,7 @@ void GraphicsEngine::Draw()
 		LModel->Draw();
 	}
 
-	PresentGraphics();
+
 }
 
 SDL_Window* GraphicsEngine::GetWindow() const

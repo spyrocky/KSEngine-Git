@@ -4,6 +4,8 @@
 #include "KSEngine/Input.h"
 #include "KSEngine/Graphics/Camera.h"
 #include "KSEngine/Graphics/Material.h"
+#include "KSEngine/Collisions/Collosion.h"
+
 
 Game& Game::GetGameInstance()
 {
@@ -76,6 +78,9 @@ void Game::Run()
         Model = Graphics->ImportModel("Game/Models/Primitives/Cube.fbx", TextureShader);
         Model2 = Graphics->ImportModel("Game/Models/Primitives/Sphere.fbx", TextureShader);
 
+        Model->AddCollisionToModel(Vector3(2.5f));
+        Model2->AddCollisionToModel(Vector3(4.0f));
+
         //set material of the model
         Model->SetMaterialBySlot(0, MGrid);
         Model2->SetMaterialBySlot(0, MConcrete);
@@ -88,26 +93,40 @@ void Game::Run()
       
 
         //import custom meshes
-        Wall = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
-        Wall2 = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
+        Wall = Graphics->ImportModel("Game/Models/damaged-wall/source/SM_Wall_Damaged.obj", TextureShader);
+        //Tree = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
+       // Coin = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
 
-        if (Wall != nullptr) {
-            //transform the wall
-            Wall->Transform.Scale = Vector3(0.05f);
-            Wall->Transform.Rotation.y = 90.0f;
-            Wall->Transform.Location = Vector3(2.0f, -2.0f, 0.0f); 
+                                         //collision wireframe size x,y,z                  
+        Wall->AddCollisionToModel(Vector3(1.25f, 4.0f, 10.0f), Vector3(0.0f, 2.0f, 0.0f));
 
-            //create the texture
-            TexturePtr TWall = Graphics->CreateTexture("Game/Models/damaged-wall/textures/T_Wall_Damaged_2x1_A_BC.png");
+        //transform the wall
+        Wall->Transform.Scale = Vector3(0.05f);
+        Wall->Transform.Rotation.y = 90.0f;
+        Wall->Transform.Location = Vector3(2.0f, -2.0f, 0.0f);
 
-            //create a material
-            MaterialPtr MWall = make_shared<Material>();
-            MWall->BaseColour.TextureV3 = TWall;
+       // Tree->Transform.Scale = Vector3(0.05f);
+       // Tree->Transform.Rotation.y = 90.0f;
+       // Tree->Transform.Location = Vector3(2.0f, -2.0f, 0.0f);
 
-            //apply the material
-            Wall->SetMaterialBySlot(1, MWall);
-        }
-        
+        /*Coin->Transform.Scale = Vector3(0.05f);
+        Coin->Transform.Rotation.y = 90.0f;
+        Coin->Transform.Location = Vector3(5.0f, -2.0f, 0.0f);
+        */
+
+        //create the texture
+        TexturePtr TWall = Graphics->CreateTexture("Game/Models/damaged-wall/textures/T_Wall_Damaged_2x1_A_BC.png");
+        MaterialPtr MWall = make_shared<Material>();
+        MWall->BaseColour.TextureV3 = TWall;
+
+      //  TexturePtr TTree = Graphics->CreateTexture("Game/Textures/GreenMosaic.jpg");
+        //create a material
+       // MaterialPtr MTree = make_shared<Material>();
+        //MTree->BaseColour.TextureV3 = TTree;
+
+        //apply the material
+        Wall->SetMaterialBySlot(1,MWall);
+       // Tree->SetMaterialBySlot(1, MTree);     
 
     }
 
@@ -145,6 +164,22 @@ void Game::Update()
     //update the last frame tiem for the next update
     LastFrameTime = CurrentFrameTime;
 
+    //just move toward slowly for the obstacle such as tree and coin
+    Wall->Transform.Location.x += -1.0f * GetFDeltaTime();
+
+    //Collision check and collectable item such as coin
+    if (Wall != nullptr)
+        Wall->Transform.Rotation.y += 50.0f * GetFDeltaTime();
+
+    Graphics->EngineDefaultCam->Update();
+
+    //collision stuff
+    CollisionPtr CamCol = Graphics->EngineDefaultCam->GetCameraCollision();
+
+    if (Wall != nullptr && CamCol->IsOverlapping(*Wall->GetCollision())) {
+        //draw green collider if colliding with wall
+        RemoveModelFromGame(Wall);
+    }
 
     //TODO:Handle Logic
     Model->Transform.Rotation.z += 50.0f * GetFDeltaTime();
@@ -204,26 +239,13 @@ void Game::Update()
 
         cout << "FOV reset: " << CameraInput.x << endl;
     } 
-   
-
-    CameraInput *= 3.0f * GetFDeltaTime();
-
-  
-
-   /* Vector3 NewLocation = Graphics->EngineDefaultCam->GetTransforms().Location += CameraInput;
-    Graphics->EngineDefaultCam->Translate(NewLocation);
-
-    if (GameInput->IsMouseButtonDown(MouseButtons::RIGHT)) {
-        Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta * GetFDeltaTime() * 25.0f);
-        Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta * GetFDeltaTime() * 25.0f);
-    }*/
-
+ 
     //move the camera based on input
     Graphics->EngineDefaultCam->AddMovementInput(CameraInput);
 
     if (GameInput->IsMouseButtonDown(MouseButtons::RIGHT)) {
-        Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta * GetFDeltaTime());
-        Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta * GetFDeltaTime());
+        Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta);
+        Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta);
         GameInput->ShowCursor(false);
     }
     else {
@@ -235,7 +257,24 @@ void Game::Update()
 
 void Game::Draw()
 {
+    Graphics->ClearGraphics();
+  
     Graphics->Draw();
+
+    //check collider of 2 object
+    if (Wall != nullptr && Tree->GetCollision()->IsOverlapping(*Wall->GetCollision())) {
+        //if collider then draw green collider if colliding with Tree
+        Tree->GetCollision()->DebugDraw(Vector3(0.0f,255.0f,0.0f));
+        cout << "It Collider !" << endl;
+    }
+    else {
+        //if not Draw red collider  with Tree
+        Tree->GetCollision()->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
+    }
+
+    Wall->GetCollision()->DebugDraw(Vector3(255.0f,0.0f,0.0f));
+
+    Graphics->PresentGraphics();
 }
 
 void Game::CloseGame()

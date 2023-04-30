@@ -75,10 +75,7 @@ bool Model::ImportMeshFromFile(const char* ImportFilePath, ShaderPtr ModelShader
 
 void Model::Draw()
 {
-	if (ModelCollision != nullptr) {
-		ModelCollision->DebugDraw(Vector3(255.0f));
-	}
-
+	
 
 	//cycle through the mesh and draw each one
 	for (MeshPtr LMesh : MeshStack) {
@@ -87,6 +84,12 @@ void Model::Draw()
 		// draw the mesh using the material slot it has been assign 
 		LMesh->Draw(MaterialStack[LMesh->GetMaterialSlot()]);
 	}
+
+	if (ModelCollision != nullptr) {
+		//ModelCollision->DebugDraw(Vector3(255.0f));
+		ModelCollision->SetLocation(Transform.Location);
+	}
+
 }
 
 void Model::SetMaterialBySlot(UNint SlotIndex, MaterialPtr NewMaterial)
@@ -145,67 +148,72 @@ void Model::FindAndImportSceneMeshes(aiNode* Node, const aiScene* Scene)
 
 MeshPtr Model::ConvertImportMeshToEngineMesh(aiMesh* ImportMesh, const aiScene* Scene)
 {
+	//initialise local versions of the mesh vertices and indices
 	vector<Vertex> Vertices;
-	vector<UNint> Indicies;
+	vector<UNint> Indices;
 
-	for (UNint i = 0; i < ImportMesh->mNumVertices; i++)
-	{
+	//loop through all of the vertices and store their location, normal value and tex coord
+	for (UNint i = 0; i < ImportMesh->mNumVertices; i++) {
+		//initialise a single vertex
 		Vertex LVertex;
 
+		//find the position of the vertex
 		LVertex.Position = Vector3(
 			ImportMesh->mVertices[i].x,
 			ImportMesh->mVertices[i].y,
 			ImportMesh->mVertices[i].z
 		);
 
+		//find the normal value of the vertex (facing direction)
 		LVertex.Normal = Vector3(
 			ImportMesh->mNormals[i].x,
 			ImportMesh->mNormals[i].y,
 			ImportMesh->mNormals[i].z
 		);
 
+		//find the texture coordinates of the vertex
 		LVertex.TextCoord = Vector2(
 			ImportMesh->mTextureCoords[0][i].x,
 			ImportMesh->mTextureCoords[0][i].y
 		);
 
+		//add the vertex into the vertices array
 		Vertices.push_back(LVertex);
 	}
 
-	if (Vertices.size() < 3) {
-		cout << "Model | One of the imported meshed doesn't have enough verticies at " << ModelFilePath << endl;
+	//make sure there are more than 3 vertices or stop creating the mesh
+	if (Vertices.size() <= 3) {
+		cout << "Model | One of the imported meshes doesn't have enough vertices at " << ModelFilePath << endl;
 		return nullptr;
 	}
 
-	// next we find the indicies , we can use value of called face 
-	// faces are basically 3 verticies
-	for (UNint i = 0; i < ImportMesh->mNumFaces; i++)
-	{
-		//store in the face
+	//next we find the indices
+	//to find the indices we can use a value called faces
+	//faces are basically 3 vertices
+	for (UNint i = 0; i < ImportMesh->mNumFaces; i++) {
+		//store the face
 		aiFace Face = ImportMesh->mFaces[i];
 
-		//run through other loop to detect all of the indicies in the faces
-		for (UNint j = 0; j < Face.mNumIndices; j++)
-		{
-			//add to the array
-			Indicies.push_back(Face.mIndices[j]);
+		//run through another loop to detect all of the indices in the face
+		for (UNint j = 0; j < Face.mNumIndices; j++) {
+			//add each index to the indices array
+			Indices.push_back(Face.mIndices[j]);
 		}
 	}
 
-	// find and assign material slot
+	//find and assign material slots
 	UNint MaterialIndex = ImportMesh->mMaterialIndex;
 
-	//resize the material stack to whatever the large material slot index is
+	//resize the material stack to whatever the largest material slot index is
 	if (MaterialStack.size() < MaterialIndex + 1) {
-		//change size of the array to the large index
+		//change the size of the array to the largest index + 1
 		MaterialStack.resize(MaterialIndex + 1);
-
-
 	}
-	//create and assign the mesh]
+
+	//create and assign the mesh
 	MeshPtr ConvertedMesh = make_shared<Mesh>();
 
-	ConvertedMesh->CreatMesh(Vertices, Indicies, ModelShader, MaterialIndex);
+	ConvertedMesh->CreatMesh(Vertices, Indices, ModelShader, MaterialIndex);
 
 	return ConvertedMesh;
 }

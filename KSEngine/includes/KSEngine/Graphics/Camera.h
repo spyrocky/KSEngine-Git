@@ -12,6 +12,9 @@ struct STCameraData {
 	float NearClip = 0.01f;
 	// * opposite of near clip *
 	float FarClip = 1000.0f;
+
+	//the speed at which the camera turn is miltiplied
+	float LookSensetivity = 0.2f;
 };
 
 class Camera {
@@ -57,4 +60,7 @@ private:
 	
 	// hold all the camera effect
 	STCameraData CameraData;
+
+	// add a camera collision
+	CollisionPtr CameraCollision;
 };
