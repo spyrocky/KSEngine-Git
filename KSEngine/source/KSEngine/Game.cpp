@@ -79,11 +79,6 @@ void Game::Run()
         Tree4 = Graphics->ImportModel("Game/Models/lowpolytree/source/PP_Tree_winding_01.fbx", TextureShader);
         Tree5 = Graphics->ImportModel("Game/Models/lowpolytree/source/PP_Tree_winding_01.fbx", TextureShader);
 
-        /*Tree = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
-        Tree2 = Graphics->ImportModel("Game/Models/Tree/tree-round.obj", TextureShader);
-        Tree3 = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
-        Tree4 = Graphics->ImportModel("Game/Models/Tree/tree-round.obj", TextureShader);
-        Tree5 = Graphics->ImportModel("Game/Models/Tree/tree-round.obj", TextureShader);*/
 
 
         // items collectable
@@ -92,12 +87,7 @@ void Game::Run()
         Coin2 = Graphics->ImportModel("Game/Models/stylized-coin/source/Coin.fbx", TextureShader);
         Coin3 = Graphics->ImportModel("Game/Models/stylized-coin/source/Coin.fbx", TextureShader);
 
-       /* Coin = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
-        Coin2 = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
-        Coin3 = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
-        */
-
-
+       
 
         //Transform all
         Trex->Transform.Scale = Vector3(0.5f);
@@ -162,10 +152,9 @@ void Game::Run()
        Coin3->SetMaterialBySlot(1, MCoin);
 
      
-       //Red light
-      // Coin->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(1.0f, 0.0f, 0.0f);
-       //Green light
-      // Coin2->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(0.0f, 1.0f, 0.0f);
+       //light
+       Tree5->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(0.5f, 0.0f, 0.0f);       
+       Tree->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(0.5f, 0.5f, 0.0f);
 
 
 
