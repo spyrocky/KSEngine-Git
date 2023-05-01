@@ -69,63 +69,79 @@ void Game::Run()
 
 
         //---------------------------------- Game obj -------------------------------------
-
+        Trex = Graphics->ImportModel("Game/Models/dino-low-poly/source/Dino_LowPoly.fbx", TextureShader);
         
         //import obj custom mesh to game (obstacles)
-        // "Game/Models/Primitives/Cube.fbx" // test 3d model
+        //test 3d model
+        Tree = Graphics->ImportModel("Game/Models/lowpolytree/source/PP_Tree_winding_01.fbx", TextureShader);
+        Tree2 = Graphics->ImportModel("Game/Models/lowpolytree/source/PP_Tree_winding_01.fbx", TextureShader);
+        Tree3 = Graphics->ImportModel("Game/Models/lowpolytree/source/PP_Tree_winding_01.fbx", TextureShader);
+        Tree4 = Graphics->ImportModel("Game/Models/lowpolytree/source/PP_Tree_winding_01.fbx", TextureShader);
+        Tree5 = Graphics->ImportModel("Game/Models/lowpolytree/source/PP_Tree_winding_01.fbx", TextureShader);
 
-        Tree = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
+        /*Tree = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
         Tree2 = Graphics->ImportModel("Game/Models/Tree/tree-round.obj", TextureShader);
         Tree3 = Graphics->ImportModel("Game/Models/Tree/tree-oval.obj", TextureShader);
         Tree4 = Graphics->ImportModel("Game/Models/Tree/tree-round.obj", TextureShader);
-        Tree5 = Graphics->ImportModel("Game/Models/Tree/tree-round.obj", TextureShader);
+        Tree5 = Graphics->ImportModel("Game/Models/Tree/tree-round.obj", TextureShader);*/
 
 
         // items collectable
-        // "Game/Models/Primitives/Sphere.fbx" // Test 3d model
+        //Test 3d model
+        Coin = Graphics->ImportModel("Game/Models/stylized-coin/source/Coin.fbx", TextureShader);
+        Coin2 = Graphics->ImportModel("Game/Models/stylized-coin/source/Coin.fbx", TextureShader);
+        Coin3 = Graphics->ImportModel("Game/Models/stylized-coin/source/Coin.fbx", TextureShader);
 
-        Coin = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
+       /* Coin = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
         Coin2 = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
         Coin3 = Graphics->ImportModel("Game/Models/coin/OBJ/SimpleCoin.obj", TextureShader);
-
+        */
 
 
 
         //Transform all
-        Tree->Transform.Scale = Vector3(1.0f);      
+        Trex->Transform.Scale = Vector3(0.5f);
+        Trex->Transform.Rotation.x = 200.0f;
+        Trex->Transform.Location = Vector3(0.0f, 0.0f, 0.0f);
+
+        Tree->Transform.Scale = Vector3(0.6f);      
         Tree->Transform.Location = Vector3(2.0f, 0.0f, 1.0f);
 
-        Tree2->Transform.Scale = Vector3(3.0f);
+        Tree2->Transform.Scale = Vector3(0.5f);
         Tree2->Transform.Location = Vector3(10.0f, 0.0f, -1.0f);
 
-        Tree3->Transform.Scale = Vector3(1.0f);
+        Tree3->Transform.Scale = Vector3(0.8f);
         Tree3->Transform.Location = Vector3(20.0f, 0.0f, 3.0f);
 
-        Tree4->Transform.Scale = Vector3(2.0f);
+        Tree4->Transform.Scale = Vector3(0.4f);
         Tree4->Transform.Location = Vector3(30.0f, 0.0f, 2.0f);
 
-        Tree5->Transform.Scale = Vector3(3.0f);
+        Tree5->Transform.Scale = Vector3(0.7f);
         Tree5->Transform.Location = Vector3(40.0f, 0.0f, -1.0f);
 
 
-        Coin->Transform.Scale = Vector3(1.0f);
+        Coin->Transform.Scale = Vector3(3.0f);
         Coin->Transform.Rotation.y = 90.0f;
         Coin->Transform.Location = Vector3(5.0f, 3.0f, 0.0f);  
 
-        Coin2->Transform.Scale = Vector3(1.0f);
+        Coin2->Transform.Scale = Vector3(3.0f);
         Coin2->Transform.Rotation.y = 90.0f;
         Coin2->Transform.Location = Vector3(25.0f, 0.0f, -1.0f);
 
-        Coin3->Transform.Scale = Vector3(1.0f);
+        Coin3->Transform.Scale = Vector3(3.0f);
         Coin3->Transform.Rotation.y = 90.0f;
         Coin3->Transform.Location = Vector3(35.0f, 1.0f, 1.0f);
        
 
         //create texture
-        TexturePtr TTree = Graphics->CreateTexture("Game/Textures/GreenMosaic.jpg");
-        TexturePtr TCoin = Graphics->CreateTexture("Game/Textures/Spongebob.jpg");
+        TexturePtr TTrex = Graphics->CreateTexture("Game/Textures/Spongebob.jpg");
+        TexturePtr TTree = Graphics->CreateTexture("Game/Textures/ColourGrid.jpg");
+        TexturePtr TCoin = Graphics->CreateTexture("Game/Models/stylized-coin/textures/Coin2_BaseColor.jpg");
 
         //create a material
+        MaterialPtr MTrex = make_shared<Material>();
+        MTrex->BaseColour.TextureV3 = TTrex;
+
         MaterialPtr MTree = make_shared<Material>();
         MTree->BaseColour.TextureV3 = TTree;
 
@@ -134,6 +150,7 @@ void Game::Run()
 
 
         //apply the material
+       Trex->SetMaterialBySlot(1, MTrex);
        Tree->SetMaterialBySlot(1, MTree);
        Tree2->SetMaterialBySlot(1, MTree);
        Tree3->SetMaterialBySlot(1, MTree);
@@ -146,13 +163,14 @@ void Game::Run()
 
      
        //Red light
-       Coin->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(1.0f, 0.0f, 0.0f);
+      // Coin->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(1.0f, 0.0f, 0.0f);
        //Green light
-       Coin2->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(0.0f, 1.0f, 0.0f);
+      // Coin2->GetMaterialBySlot(0)->EmissiveColour.MultiplierV3 = Vector3(0.0f, 1.0f, 0.0f);
 
 
 
        //Add collision box
+       Trex->AddCollisionToModel(Vector3(2.5f, 5.0f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
        Tree->AddCollisionToModel(Vector3(2.5f, 5.0f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
        Tree2->AddCollisionToModel(Vector3(2.5f, 5.0f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
        Tree3->AddCollisionToModel(Vector3(2.5f, 5.0f, 2.5f), Vector3(0.0f, 2.0f, 0.0f));
@@ -197,6 +215,7 @@ void Game::ProcessInput()
     STCameraData CamData = Graphics->EngineDefaultCam->GetCameraData();
     */
 
+    
 
     //move camera foward
     if (GameInput->IsKeyDown(SDL_SCANCODE_W)) {
@@ -250,19 +269,20 @@ void Game::Update()
 
     
     //Rotate collectable item such as coin
-   /* if (Coin != nullptr) {
+    if (Coin != nullptr) {
         Coin->Transform.Rotation.y += 50.0f * GetFDeltaTime(); //rotate coin
     }
 
     if (Coin2 != nullptr) {
-      Coin->Transform.Rotation.y += 50.0f * GetFDeltaTime(); //rotate coin
+      Coin2->Transform.Rotation.y += 50.0f * GetFDeltaTime(); //rotate coin
     }
 
     if (Coin3 != nullptr) {
-        Coin->Transform.Rotation.y += 50.0f * GetFDeltaTime(); //rotate coin
-    }*/
+        Coin3->Transform.Rotation.y += 50.0f * GetFDeltaTime(); //rotate coin
+    }
     
-        
+    
+
     Graphics->EngineDefaultCam->Update();
 
     //Do collision stuff
@@ -300,6 +320,12 @@ void Game::Draw()
     //debug draw the camera collision
     CollisionPtr CamCol =  Graphics->EngineDefaultCam->GetCameraCollision();    
     //CamCol->DebugDraw(Vector3(0.0f, 255.0f, 0.0f));
+
+    //Put Trex in camera to do FPS Game
+    //if (Trex != nullptr) {
+    //    Trex->Transform.Location = Vector3(2.0f, 0.0f, 1.0f);
+    //}
+
 
     //check collider of 2 object
    /* if (Tree != nullptr && CamCol->IsOverlapping(*Tree->GetCollision())) {
